@@ -1,5 +1,6 @@
 package com.sujikim.ttt;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -8,9 +9,15 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.tsengvn.typekit.TypekitContextWrapper;
+
 import org.w3c.dom.Text;
 
 public class LoginActivity extends AppCompatActivity {
+    //한글 폰트 적용
+    @Override protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(TypekitContextWrapper.wrap(newBase));
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
