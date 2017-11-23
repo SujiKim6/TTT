@@ -13,7 +13,7 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
-    ImageView imageView;
+    //ImageView imageView;
     Button addButton;
 
     @Override
@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         addButton = (Button)findViewById(R.id.addButton);
-        imageView = (ImageView)findViewById(R.id.view);
+       // imageView = (ImageView)findViewById(R.id.view);
 
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
