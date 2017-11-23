@@ -6,7 +6,7 @@ import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity {
 
-    Button addClothesBtn = (Button)findViewById(R.id.addClothesBtn);
+    Button addClothes = (Button)findViewById(R.id.addClothesBtn);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
