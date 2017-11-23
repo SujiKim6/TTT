@@ -12,13 +12,15 @@
         android:layout_width="134dp"
         android:layout_height="47dp"
         android:layout_marginBottom="8dp"
-        android:layout_marginTop="8dp"
-        android:background="#3f519a"
-        android:text="옷 등록하기"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
         android:layout_marginRight="38dp"
-        app:layout_constraintRight_toRightOf="parent" />
+        android:layout_marginTop="8dp"
+        android:background="@drawable/round"
+        android:text="옷 등록하기"
+        android:textColor="#ffffff"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+    // android:background="#3f519a"
 
     <Button
         android:id="@+id/button2"
@@ -30,6 +32,7 @@
         android:layout_marginTop="8dp"
         android:background="#3f519a"
         android:text="옷추천 받기"
+        android:textColor="#ffffff"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.652"
         app:layout_constraintLeft_toLeftOf="parent"
