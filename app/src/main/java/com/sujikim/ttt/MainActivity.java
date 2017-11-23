@@ -2,8 +2,11 @@ package com.sujikim.ttt;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity {
+
+    Button addClothesBtn = (Button)findViewById(R.id.addClothesBtn);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
