@@ -14,10 +14,11 @@
         android:ems="10"
         android:hint="아이디"
         android:inputType="textPersonName"
+        android:textColorLink="#fdbd39"
+        app:layout_constraintHorizontal_bias="0.512"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintHorizontal_bias="0.512" />
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <EditText
         android:id="@+id/passwordText"
@@ -28,21 +29,24 @@
         android:ems="10"
         android:hint="비밀번호"
         android:inputType="textPassword"
+        android:textColorLink="#fdbd39"
         app:layout_constraintHorizontal_bias="0.512"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/idText" />
+        app:layout_constraintTop_toBottomOf="@+id/idText"/>
 
     <Button
         android:id="@+id/loginButton"
         android:layout_width="345dp"
         android:layout_height="48dp"
         android:layout_marginTop="55dp"
+        android:background="@drawable/bt_corner"
         android:text="로그인"
+        android:textColor="#ffffff"
         app:layout_constraintHorizontal_bias="0.512"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/passwordText" />
+        app:layout_constraintTop_toBottomOf="@+id/passwordText"/>
 
     <TextView
         android:id="@+id/registerButton"
@@ -54,5 +58,7 @@
         android:layout_marginTop="15dp"
         app:layout_constraintTop_toBottomOf="@+id/loginButton"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent" />
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="45dp"/>
 </android.support.constraint.ConstraintLayout>
