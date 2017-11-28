@@ -65,4 +65,17 @@
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_marginBottom="45dp"
         app:layout_constraintVertical_bias="0.511"/>
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        app:srcCompat="@drawable/loginlogo"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/idText"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="8dp"
+        app:layout_constraintVertical_bias="0.559"/>
 </android.support.constraint.ConstraintLayout>
