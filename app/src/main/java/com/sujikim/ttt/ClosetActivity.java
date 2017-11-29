@@ -11,7 +11,7 @@ import android.widget.Toast;
 
 public class ClosetActivity extends AppCompatActivity {
 
-    String[] Clothes =new String[] {"긴 팔","반 팔","긴바지","반바지","두꺼운 외투", "얇은 외투"};
+    String[] Clothes =new String[] {"긴  팔","반  팔","긴 바지","반 바지","두꺼운 외투", "얇은 외투"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
