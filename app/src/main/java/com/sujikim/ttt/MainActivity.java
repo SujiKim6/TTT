@@ -198,7 +198,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void getWeatherData (double lat, double lng) {
         String url = "http://api.openweathermap.org/data/2.5/weather?lat="+lat+"&lon="+
-                lng+"&appid=10f6fc8cfbff125d7da532526029b553&units=metric";
+                lng+"&appid=10f6fc8cfbff125d7da532526029b553";
         ReceiveWeatherTask receiverUseTask = new ReceiveWeatherTask();
         receiverUseTask.execute(url);
     }
@@ -252,7 +252,8 @@ public class MainActivity extends AppCompatActivity {
                     maxTemp = result.getJSONObject("main").getString("temp_max");
                     description = result.getJSONArray("weather").getJSONObject(0).getString("description");
 
-                    double averDouble = (Double.parseDouble(minTemp) + Double.parseDouble(maxTemp))/2.0;
+                    //double averDouble = (Double.parseDouble(minTemp) + Double.parseDouble(maxTemp))/2.0;
+                    double averDouble = Double.parseDouble(minTemp)-273.15;
                     String average = Double.toString(averDouble);
 
                     averageTemperature.setText(String.valueOf(average));
