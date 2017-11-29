@@ -1,15 +1,19 @@
 package com.sujikim.ttt;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 
+import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.AsyncTask;
+
 import android.provider.MediaStore;
+import android.provider.Settings;
+
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -29,39 +33,23 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Locale;
 
 
-public class MainActivity extends AppCompatActivity {
-
-    int MY_PERMISSION = 0;
+public class MainActivity extends AppCompatActivity implements LocationListener {
 
     // 옷등록 버튼
-    Button addClothes;
+    private Button addClothes;
 
     // 날씨 API 출력
-    TextView averageTemperature;
+    private TextView averageTemperature;
 
     // 지역 출력
-    TextView currentplace;
+    private TextView currentplace;
 
-    MainActivity mContext;
-
-    // 현재 위치 받아오기 위해 변수 선언
-    LocationManager locationManager;
-    // 현재 GPS 사용유무
-    boolean isGPSEnabled = false;
-    // 네트워크 사용유무
-    boolean isNetworkEnabled = false;
-    // GPS 상태값
-    boolean isGetLocation = false;
-    Location location;
-    double lat; //위도
-    double lon; //경도
-
-    // 최소 GPS 정보 업데이트 거리 1000미터
-    private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 1000;
-    // 최소 업데이트 시간 1분
-    private static final long MIN_TIME_BW_UPDATES = 1000 * 60 * 1;
+    private LocationManager locationManager;
+    private double lat;
+    private double lon;
 
 
     @Override
@@ -70,8 +58,12 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         addClothes = (Button) findViewById(R.id.addClothesBtn);
-        averageTemperature = (TextView)findViewById(R.id.averTempText);
-        currentplace = (TextView)findViewById(R.id.locationText);
+        averageTemperature = (TextView) findViewById(R.id.averTempText);
+        currentplace = (TextView) findViewById(R.id.locationText);
+
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 2000, 1, this);
 
         // 옷을 추가하기 위한 버튼을 클릭시 실행
         addClothes.setOnClickListener(new View.OnClickListener() {
@@ -102,106 +94,50 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        getLocation();
-        //getWeatherData(lat,lon);
-
-    }
-
-
-    // 현재 위치를 가져오는 함수 선언
-    public void getLocation() {
-        try {
-            locationManager = (LocationManager) getSystemService(mContext.LOCATION_SERVICE);
-            // GPS 정보 가져오기
-            isGPSEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
-
-            //현재 네트워크 상태 값 알아오기
-            isNetworkEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
-
-            // GPS와 네트워크 사용이 가능하지 않을때 소스 구현 => 서울날씨로 잡아주기
-            if (!isGPSEnabled && !isNetworkEnabled) {
-                lat = 37.5650172;
-                lon = 126.8494674;
-            } else {
-                this.isGetLocation = true;
-                // 네트워크 정보로부터 위치값 가져오기
-                if (isNetworkEnabled) {
-                    locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, MIN_TIME_BW_UPDATES, MIN_DISTANCE_CHANGE_FOR_UPDATES, locationListener);
-                    if (locationManager != null) {
-                        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                            // TODO: Consider calling
-                            //    ActivityCompat#requestPermissions
-                            // here to request the missing permissions, and then overriding
-                            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                            //                                          int[] grantResults)
-                            // to handle the case where the user grants the permission. See the documentation
-                            // for ActivityCompat#requestPermissions for more details.
-                            ActivityCompat.requestPermissions(MainActivity.this, new String[]{
-                                    Manifest.permission.INTERNET,
-                                    Manifest.permission.ACCESS_COARSE_LOCATION,
-                                    Manifest.permission.ACCESS_FINE_LOCATION,
-                                    Manifest.permission.ACCESS_NETWORK_STATE,
-                                    Manifest.permission.SYSTEM_ALERT_WINDOW,
-                                    Manifest.permission.WRITE_EXTERNAL_STORAGE
-                            }, MY_PERMISSION);
-                        }
-                        location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-                        if(location != null) {
-                            // 위도 경도 저장
-                            lat = location.getLatitude();
-                            lon = location.getLongitude();
-                        }
-                    }
-                }
-                if (isGPSEnabled) {
-                    if(location == null) {
-                        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, MIN_TIME_BW_UPDATES, MIN_DISTANCE_CHANGE_FOR_UPDATES, locationListener);
-                        if(locationManager != null) {
-                            location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                            if(location != null) {
-                                lat = location.getLatitude();
-                                lon = location.getLongitude();
-                            }
-                        }
-                    }
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
         getWeatherData(lat,lon);
     }
+    @Override
+    public void onLocationChanged(Location location) {
+        String msg = "New Latitude: " + location.getLatitude()
+                + "New Longitude: " + location.getLongitude();
+        lat = location.getLatitude();
+        lon = location.getLongitude();
+        Toast.makeText(getBaseContext(), msg, Toast.LENGTH_LONG).show();
+    }
 
-    // 거리가 1000미터가 넘어가거나 시간이 1분이 지나면 위치 업데이트
-    private LocationListener locationListener = new LocationListener() {
-        @Override
-        public void onLocationChanged(Location location) {
-            //Toast("onLocationChanged");
-            getWeatherData(location.getLatitude(), location.getLongitude());
-        }
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
 
-        @Override
-        public void onStatusChanged(String s, int i, Bundle bundle) {
-            //Toast("onStatusChanged");
-        }
+    }
 
-        @Override
-        public void onProviderEnabled(String s) {
-            //Toast("onProviderEnabled");
-        }
+    @Override
+    public void onProviderEnabled(String provider) {
 
-        @Override
-        public void onProviderDisabled(String s) {
-            //Toast("onProviderDisabled");
-        }
-    };
+        Toast.makeText(getBaseContext(), "Gps is turned on!! ",
+                Toast.LENGTH_SHORT).show();
+    }
 
+    // GPS가 꺼져있는지 확인한다.
+    @Override
+    public void onProviderDisabled(String provider) {
+        Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+        startActivity(intent);
+        Toast.makeText(getBaseContext(), "Gps is turned off!! ",
+                Toast.LENGTH_SHORT).show();
+    }
+
+
+
+
+    // 위도 경도에 따른 현재 온도 가져오기
     private void getWeatherData (double lat, double lng) {
         String url = "http://api.openweathermap.org/data/2.5/weather?lat="+lat+"&lon="+
-                lng+"&appid=10f6fc8cfbff125d7da532526029b553";
+                lng+"&appid=10f6fc8cfbff125d7da532526029b553&units=imperial&lang=kr";
+//        String url = "http://api.openweathermap.org/data/2.5/weather?lat=37.5665&lon=126.978&appid=10f6fc8cfbff125d7da532526029b553&units=metric&lang=kr";
         ReceiveWeatherTask receiverUseTask = new ReceiveWeatherTask();
         receiverUseTask.execute(url);
     }
+
 
 
 
@@ -226,7 +162,6 @@ public class MainActivity extends AppCompatActivity {
                     String readed;
                     while ((readed = in.readLine()) != null) {
                         JSONObject jObject = new JSONObject(readed);
-//                        String result = jObject.getJSONArray("weather").getJSONObject(0).getString("icon");
                         return jObject;
                     }
                 } else {
@@ -241,6 +176,8 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(JSONObject result) {
 //        Log.i(TAG, result.toString());
+
+            // JSON객체에서 온도를 가져와서 결과값 화면에 출력하기
             if (result != null) {
                 String description = "";
                 String maxTemp = "";
@@ -252,11 +189,11 @@ public class MainActivity extends AppCompatActivity {
                     maxTemp = result.getJSONObject("main").getString("temp_max");
                     description = result.getJSONArray("weather").getJSONObject(0).getString("description");
 
-                    //double averDouble = (Double.parseDouble(minTemp) + Double.parseDouble(maxTemp))/2.0;
-                    double averDouble = (Double.parseDouble(minTemp)-32)/1.8;
+                    double averDouble = (Double.parseDouble(minTemp) + Double.parseDouble(maxTemp))/2.0;
                     String average = Double.toString(averDouble);
 
                     averageTemperature.setText(String.valueOf(average));
+
 
                 } catch (JSONException e) {
                     e.printStackTrace();
