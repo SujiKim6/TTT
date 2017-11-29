@@ -59,47 +59,41 @@
             tools:layout_editor_absoluteY="307dp"/>
 
         <TextView
-            android:id="@+id/weatherIcon"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_alignLeft="@+id/cityName"
-            android:layout_alignStart="@+id/cityName"
-            android:layout_below="@+id/cityName"
-            android:gravity="center"
-            android:text="IC"/>
-
-        <TextView
             android:id="@+id/highTemp"
-            android:layout_width="wrap_content"
+            android:layout_width="65dp"
             android:layout_height="30dp"
-            android:gravity="center_vertical"
+            android:layout_above="@+id/lowTemp"
+            android:layout_toEndOf="@+id/textView8"
+            android:layout_toRightOf="@+id/textView8"
+            android:gravity="center"
             android:text="최고기온"
             android:textSize="16sp"
-            android:layout_above="@+id/lowTemp"
-            android:layout_toRightOf="@+id/textView8"
-            android:layout_toEndOf="@+id/textView8"/>
+            android:textStyle="bold"/>
 
         <TextView
             android:id="@+id/lowTemp"
-            android:layout_width="wrap_content"
+            android:layout_width="65dp"
             android:layout_height="30dp"
-            android:gravity="center_vertical"
-            android:text="최저기온"
-            android:textSize="16sp"
             android:layout_alignBottom="@+id/textView10"
             android:layout_toEndOf="@+id/textView8"
-            android:layout_toRightOf="@+id/textView8"/>
+            android:layout_toRightOf="@+id/textView8"
+            android:gravity="center"
+            android:text="최저기온"
+            android:textSize="16sp"
+            android:textStyle="bold"/>
 
         <TextView
             android:id="@+id/currentTemp"
             android:layout_width="70dp"
             android:layout_height="60dp"
             android:layout_below="@+id/cityName"
-            android:layout_toEndOf="@+id/weatherIcon"
-            android:layout_toRightOf="@+id/weatherIcon"
+            android:layout_toLeftOf="@+id/textView10"
+            android:layout_toStartOf="@+id/textView10"
             android:gravity="center"
             android:text="현재기온"
-            android:textSize="18sp"/>
+            android:textColor="@color/colorAccent"
+            android:textSize="18sp"
+            android:textStyle="bold"/>
 
         <TextView
             android:id="@+id/textView7"
@@ -127,12 +121,14 @@
             android:id="@+id/textView10"
             android:layout_width="wrap_content"
             android:layout_height="60dp"
-            android:layout_below="@+id/cityName"
-            android:layout_toEndOf="@+id/currentTemp"
-            android:layout_toRightOf="@+id/currentTemp"
             android:gravity="center_vertical"
             android:text="°C"
-            android:textSize="18sp"/>
+            android:textSize="18sp"
+            android:layout_marginRight="13dp"
+            android:layout_marginEnd="13dp"
+            android:layout_below="@+id/cityName"
+            android:layout_toLeftOf="@+id/textView8"
+            android:layout_toStartOf="@+id/textView8"/>
 
         <TextView
             android:id="@+id/textView8"
@@ -155,6 +151,18 @@
             android:gravity="center"
             android:text="  최저 :    "
             android:textSize="16sp"/>
+
+        <TextView
+            android:id="@+id/textView12"
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
+            android:text="현재 : "
+            android:textSize="18sp"
+            android:layout_below="@+id/cityName"
+            android:gravity="center"
+            android:layout_alignLeft="@+id/cityName"
+            android:layout_alignStart="@+id/cityName"/>
+
 
     </RelativeLayout>
 

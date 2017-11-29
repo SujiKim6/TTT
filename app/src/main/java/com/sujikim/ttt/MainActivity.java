@@ -3,6 +3,7 @@ package com.sujikim.ttt;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -56,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
         currentTemperature = (TextView)findViewById(R.id.currentTemp);
         highTemperature = (TextView)findViewById(R.id.highTemp);
         lowTemperature = (TextView)findViewById(R.id.lowTemp);
+
 
         addClothes.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -216,7 +218,6 @@ public class MainActivity extends AppCompatActivity {
 
                     average = (Double.parseDouble(minTemp) + Double.parseDouble(maxTemp))/2.0;
 
-
 //                    averageTemperature.setText(String.valueOf(average));
                     currentCity.setText(String.valueOf(city));
                     currentTemperature.setText(String.valueOf(curTemp));
@@ -230,6 +231,5 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
-
 
 }
