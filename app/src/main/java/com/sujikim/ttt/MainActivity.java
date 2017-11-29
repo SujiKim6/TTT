@@ -33,6 +33,8 @@ import java.net.URL;
 
 public class MainActivity extends AppCompatActivity {
 
+    int MY_PERMISSION = 0;
+
     // 옷등록 버튼
     Button addClothes;
 
@@ -109,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
     // 현재 위치를 가져오는 함수 선언
     public void getLocation() {
         try {
-            locationManager = (LocationManager) mContext.getSystemService(LOCATION_SERVICE);
+            locationManager = (LocationManager) getSystemService(mContext.LOCATION_SERVICE);
             // GPS 정보 가져오기
             isGPSEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
 
@@ -134,14 +136,21 @@ public class MainActivity extends AppCompatActivity {
                             //                                          int[] grantResults)
                             // to handle the case where the user grants the permission. See the documentation
                             // for ActivityCompat#requestPermissions for more details.
-                            location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-                            if(location != null) {
-                                // 위도 경도 저장
-                                lat = location.getLatitude();
-                                lon = location.getLongitude();
-                            }
+                            ActivityCompat.requestPermissions(MainActivity.this, new String[]{
+                                    Manifest.permission.INTERNET,
+                                    Manifest.permission.ACCESS_COARSE_LOCATION,
+                                    Manifest.permission.ACCESS_FINE_LOCATION,
+                                    Manifest.permission.ACCESS_NETWORK_STATE,
+                                    Manifest.permission.SYSTEM_ALERT_WINDOW,
+                                    Manifest.permission.WRITE_EXTERNAL_STORAGE
+                            }, MY_PERMISSION);
                         }
-
+                        location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+                        if(location != null) {
+                            // 위도 경도 저장
+                            lat = location.getLatitude();
+                            lon = location.getLongitude();
+                        }
                     }
                 }
                 if (isGPSEnabled) {
@@ -189,7 +198,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void getWeatherData (double lat, double lng) {
         String url = "http://api.openweathermap.org/data/2.5/weather?lat="+lat+"&lon="+
-                lng+"&units=metric&appid=10f6fc8cfbff125d7da532526029b553";
+                lng+"&appid=10f6fc8cfbff125d7da532526029b553&units=metric";
         ReceiveWeatherTask receiverUseTask = new ReceiveWeatherTask();
         receiverUseTask.execute(url);
     }
