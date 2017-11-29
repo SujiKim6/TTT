@@ -253,7 +253,7 @@ public class MainActivity extends AppCompatActivity {
                     description = result.getJSONArray("weather").getJSONObject(0).getString("description");
 
                     //double averDouble = (Double.parseDouble(minTemp) + Double.parseDouble(maxTemp))/2.0;
-                    double averDouble = Double.parseDouble(minTemp)-273.15;
+                    double averDouble = (Double.parseDouble(minTemp)-32)/1.8;
                     String average = Double.toString(averDouble);
 
                     averageTemperature.setText(String.valueOf(average));
