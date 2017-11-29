@@ -38,8 +38,6 @@ public class MainActivity extends AppCompatActivity {
 
     // 날씨 API 출력
     TextView averageTemperature;
-    String maxTemp = "";
-    String minTemp = "";
 
     // 지역 출력
     TextView currentplace;
@@ -103,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         getLocation();
-        getWeatherData(lat,lon);
+        //getWeatherData(lat,lon);
 
     }
 
@@ -162,6 +160,7 @@ public class MainActivity extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        getWeatherData(lat,lon);
     }
 
     // 거리가 1000미터가 넘어가거나 시간이 1분이 지나면 위치 업데이트
@@ -190,7 +189,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void getWeatherData (double lat, double lng) {
         String url = "http://api.openweathermap.org/data/2.5/weather?lat="+lat+"&lon="+
-                lon+"&units=metric&appid=10f6fc8cfbff125d7da532526029b553";
+                lng+"&units=metric&appid=10f6fc8cfbff125d7da532526029b553";
         ReceiveWeatherTask receiverUseTask = new ReceiveWeatherTask();
         receiverUseTask.execute(url);
     }
@@ -235,6 +234,9 @@ public class MainActivity extends AppCompatActivity {
 //        Log.i(TAG, result.toString());
             if (result != null) {
                 String description = "";
+                String maxTemp = "";
+                String minTemp = "";
+                String city = "";
 
                 try {
                     minTemp = result.getJSONObject("main").getString("temp_min");
