@@ -2,6 +2,7 @@ package com.sujikim.ttt;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.location.LocationManager;
 import android.provider.MediaStore;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -13,6 +14,10 @@ import android.widget.Toast;
 public class MainActivity extends AppCompatActivity {
 
     Button addClothes;
+
+    private LocationManager locationManager;
+    private double lat;
+    private double lon;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
