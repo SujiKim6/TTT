@@ -15,6 +15,7 @@ public class MainActivity extends AppCompatActivity {
 
     //ImageView imageView;
     Button addButton;
+    Button btnCloset;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         addButton = (Button)findViewById(R.id.addButton);
+        btnCloset = (Button)findViewById(R.id.btnCloset);
        // imageView = (ImageView)findViewById(R.id.view);
 
         addButton.setOnClickListener(new View.OnClickListener() {
@@ -60,6 +62,13 @@ public class MainActivity extends AppCompatActivity {
 
                 dialog.create();
                 dialog.show();
+            }
+        });
+        btnCloset.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent closetIntent = new Intent(MainActivity.this, ClosetActivity.class);
+                MainActivity.this.startActivity(closetIntent);
             }
         });
 

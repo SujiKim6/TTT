@@ -21,7 +21,15 @@
         <activity android:name=".RegisterActivity" />
         <activity android:name=".MainActivity" />
         <activity android:name=".AddClothesActivity" />
-        <activity android:name=".RecommendActivity"></activity>
+        <activity android:name=".RecommendActivity" />
+        <activity android:name=".ClosetActivity"
+            android:label="@string/closet"
+            android:theme="@style/AppTheme2"/>
+
+        <activity
+            android:name=".LongTActivity"
+            android:label="@string/title_activity_long_t"
+            android:theme="@style/AppTheme"></activity>
     </application>
 
 </manifest>
