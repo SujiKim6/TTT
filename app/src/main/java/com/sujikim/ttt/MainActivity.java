@@ -220,8 +220,8 @@ public class MainActivity extends AppCompatActivity {
 //                    averageTemperature.setText(String.valueOf(average));
                     currentCity.setText(String.valueOf(city));
                     currentTemperature.setText(String.valueOf(curTemp));
-                    highTemperature.setText(String.valueOf(maxTemp));
-                    lowTemperature.setText(String.valueOf(minTemp));
+                    highTemperature.setText("   "+String.valueOf(maxTemp)+"  ");
+                    lowTemperature.setText("   "+String.valueOf(minTemp)+"  ");
 
                 } catch (JSONException e) {
                     e.printStackTrace();
