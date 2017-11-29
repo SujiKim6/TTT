@@ -18,6 +18,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -36,7 +37,7 @@ import java.net.URL;
 import java.util.Locale;
 
 
-public class MainActivity extends AppCompatActivity implements LocationListener {
+public class MainActivity extends AppCompatActivity {
 
     // 옷등록 버튼
     private Button addClothes;
@@ -61,9 +62,6 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         averageTemperature = (TextView) findViewById(R.id.averTempText);
         currentplace = (TextView) findViewById(R.id.locationText);
 
-        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 2000, 1, this);
 
         // 옷을 추가하기 위한 버튼을 클릭시 실행
         addClothes.setOnClickListener(new View.OnClickListener() {
@@ -86,44 +84,85 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                         .setNegativeButton("취소", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                Toast.makeText(MainActivity.this, "취소하였습니다", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(MainActivity.this, "취소됐습니다", Toast.LENGTH_SHORT).show();
                             }
                         });
                 dialog.create();
                 dialog.show();
             }
         });
+        currentMyLocation();
 
-        getWeatherData(lat,lon);
-    }
-    @Override
-    public void onLocationChanged(Location location) {
-        String msg = "New Latitude: " + location.getLatitude()
-                + "New Longitude: " + location.getLongitude();
-        lat = location.getLatitude();
-        lon = location.getLongitude();
-        Toast.makeText(getBaseContext(), msg, Toast.LENGTH_LONG).show();
-    }
-
-    @Override
-    public void onStatusChanged(String provider, int status, Bundle extras) {
 
     }
+    // 위치 정보 확인 메서드
+    private void currentMyLocation() {
 
-    @Override
-    public void onProviderEnabled(String provider) {
+        // LocationManager 객체 생성 (LOCATION_SERVICE 사용)
+        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+//        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
-        Toast.makeText(getBaseContext(), "Gps is turned on!! ",
-                Toast.LENGTH_SHORT).show();
+        // GPSListener 객체 생성 (LocationListener 인터페이스 정의 필요)
+        GPSListener gpsListener = new GPSListener();
+        long minTime = 10000; //1초마다
+        float minDistance = 0;
+
+        try {
+            // GPS를 이용한 위치 요청
+            locationManager.requestLocationUpdates(
+                    LocationManager.GPS_PROVIDER,
+                    minTime,
+                    minDistance,
+                    gpsListener);
+
+            // 네트워크를 이용한 위치 요청
+            locationManager.requestLocationUpdates(
+                    LocationManager.NETWORK_PROVIDER,
+                    minTime,
+                    minDistance,
+                    gpsListener);
+
+            // 위치요청을 한 상태에서 위치추적되는 동안 먼저 최근 위치를 조회해서 set
+            Location lastLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            if (lastLocation != null) {
+                lat = lastLocation.getLatitude();
+                lon = lastLocation.getLongitude();
+
+//                Toast.makeText(getApplicationContext(), "마지막 위치 : " + "Latitude : " + lat + "\nLongitude:" + lon, Toast.LENGTH_LONG).show();
+                getWeatherData(lat,lon);
+            }
+        } catch(SecurityException ex) {
+            ex.printStackTrace();
+        }
+
+        Toast.makeText(getApplicationContext(), "위치 확인 시작", Toast.LENGTH_SHORT).show();
     }
 
-    // GPS가 꺼져있는지 확인한다.
-    @Override
-    public void onProviderDisabled(String provider) {
-        Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-        startActivity(intent);
-        Toast.makeText(getBaseContext(), "Gps is turned off!! ",
-                Toast.LENGTH_SHORT).show();
+
+    // LocationListener 정의
+    private class GPSListener implements LocationListener {
+
+        // LocationManager 에서 위치정보가 변경되면 호출
+        public void onLocationChanged(Location location) {
+            lat = location.getLatitude();
+            lon = location.getLongitude();
+
+            String msg = "Latitude : "+ lat + "\nLongitude:"+ lon;
+            Log.i("GPSListener", msg);
+
+
+//            Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
+            getWeatherData(lat,lon);
+        }
+
+        public void onProviderDisabled(String provider) {
+        }
+
+        public void onProviderEnabled(String provider) {
+        }
+
+        public void onStatusChanged(String provider, int status, Bundle extras) {
+        }
     }
 
 
@@ -132,8 +171,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     // 위도 경도에 따른 현재 온도 가져오기
     private void getWeatherData (double lat, double lng) {
         String url = "http://api.openweathermap.org/data/2.5/weather?lat="+lat+"&lon="+
-                lng+"&appid=10f6fc8cfbff125d7da532526029b553&units=imperial&lang=kr";
-//        String url = "http://api.openweathermap.org/data/2.5/weather?lat=37.5665&lon=126.978&appid=10f6fc8cfbff125d7da532526029b553&units=metric&lang=kr";
+                lng+"&appid=10f6fc8cfbff125d7da532526029b553&units=metric&lang=kr";
         ReceiveWeatherTask receiverUseTask = new ReceiveWeatherTask();
         receiverUseTask.execute(url);
     }
@@ -188,11 +226,13 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                     minTemp = result.getJSONObject("main").getString("temp_min");
                     maxTemp = result.getJSONObject("main").getString("temp_max");
                     description = result.getJSONArray("weather").getJSONObject(0).getString("description");
+                    city = result.getString("name");
 
                     double averDouble = (Double.parseDouble(minTemp) + Double.parseDouble(maxTemp))/2.0;
                     String average = Double.toString(averDouble);
 
                     averageTemperature.setText(String.valueOf(average));
+                    currentplace.setText(String.valueOf(city));
 
 
                 } catch (JSONException e) {
