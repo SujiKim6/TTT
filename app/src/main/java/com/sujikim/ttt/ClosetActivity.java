@@ -33,7 +33,7 @@ public class ClosetActivity extends AppCompatActivity {
                     ClosetActivity.this.startActivity(longT);
 
                 }else if(selectString.equals("반  팔")) {
-                    Intent shortT = new Intent(ClosetActivity.this, ShortTActivity.class);
+                    Intent shortT = new Intent(ClosetActivity.this, .class);
                     ClosetActivity.this.startActivity(shortT);
 
                 }
