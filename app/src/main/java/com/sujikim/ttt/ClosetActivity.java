@@ -28,8 +28,15 @@ public class ClosetActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String selectString = (String)parent.getItemAtPosition(position);
 
-                Intent longT = new Intent(ClosetActivity.this, LongTActivity.class);
-                ClosetActivity.this.startActivity(longT);
+                if(selectString.equals("긴  팔")){
+                    Intent longT = new Intent(ClosetActivity.this, LongTActivity.class);
+                    ClosetActivity.this.startActivity(longT);
+
+                }else if(selectString.equals("반  팔")) {
+                    Intent shortT = new Intent(ClosetActivity.this, ShortTActivity.class);
+                    ClosetActivity.this.startActivity(shortT);
+
+                }
 
             }
         });

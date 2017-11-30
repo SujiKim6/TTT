@@ -16,6 +16,7 @@ public class MainActivity extends AppCompatActivity {
     //ImageView imageView;
     Button addButton;
     Button btnCloset;
+    Button recClothes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,7 +25,16 @@ public class MainActivity extends AppCompatActivity {
 
         addButton = (Button)findViewById(R.id.addButton);
         btnCloset = (Button)findViewById(R.id.btnCloset);
+        recClothes =(Button)findViewById(R.id.recClothes) ;
        // imageView = (ImageView)findViewById(R.id.view);
+
+        recClothes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent recommendIntent = new Intent(MainActivity.this, RecommendActivity.class);
+                MainActivity.this.startActivity(recommendIntent);
+            }
+        });
 
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -64,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
                 dialog.show();
             }
         });
+
         btnCloset.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
