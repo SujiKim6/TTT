@@ -30,7 +30,9 @@
             android:name=".LongTActivity"
             android:label="@string/title_activity_long_t"
             android:theme="@style/AppTheme" />
-        <activity android:name=".ShortTActivity"></activity>
+
+        <activity android:name=".ShortTActivity"
+            android:label="@string/title_activity_short_t"></activity>
     </application>
 
 </manifest>
