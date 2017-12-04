@@ -28,9 +28,10 @@ dependencies {
     //volley라는 라이브러리 추가
     //volley라는 라이브러리는 http, 즉 네트워크와 통신할 수 있게 해줌, 이는 DB 연결을 위함
     // add library called volley/ volley helps to communicate with network
+    
+
     compile 'com.android.support:appcompat-v7:26.+'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.android.volley:volley:1.0.0'
     testCompile 'junit:junit:4.12'
-
 }
