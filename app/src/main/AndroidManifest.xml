@@ -43,7 +43,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MyClosetActivity"></activity>
+        <activity android:name=".MyClosetActivity" />
+        <activity android:name=".MyLongTActivity" />
+        <activity android:name=".MyShortTActivity"></activity>
     </application>
 
 </manifest>
