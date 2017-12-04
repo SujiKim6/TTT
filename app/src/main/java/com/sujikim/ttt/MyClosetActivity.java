@@ -14,7 +14,7 @@ public class MyClosetActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_closet);
+        setContentView(R.layout.activity_my_closet);
         ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, Clothes);
 
         ListView listView = (ListView) findViewById(R.id.MyList);
