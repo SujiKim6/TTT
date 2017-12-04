@@ -43,9 +43,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MyClosetActivity" />
-        <activity android:name=".MyLongTActivity" />
-        <activity android:name=".MyShortTActivity"></activity>
+        <activity android:name=".MyClosetActivity"
+            android:label="@string/closet"
+            android:theme="@style/AppTheme2"/>
+        <activity android:name=".MyLongTActivity"
+            android:label="@string/title_activity_long_t"
+            android:theme="@style/AppTheme"/>
+        <activity android:name=".MyShortTActivity"
+            android:label="@string/title_activity_short_t"></activity>
     </application>
 
 </manifest>
