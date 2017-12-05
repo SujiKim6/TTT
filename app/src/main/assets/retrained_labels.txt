@@ -1,0 +1,6 @@
+jackets
+longpants
+longt
+padding
+shortpants
+shortt

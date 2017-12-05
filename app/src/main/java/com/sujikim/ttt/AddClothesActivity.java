@@ -21,6 +21,9 @@ import com.sujikim.ttt.model.ShortPants;
 import com.sujikim.ttt.model.ShortT;
 
 import java.io.ByteArrayOutputStream;
+import java.util.List;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 import io.realm.Realm;
 
@@ -32,8 +35,23 @@ public class AddClothesActivity extends AppCompatActivity implements View.OnClic
     private Bitmap thumbnail;
 
 
+    // DB
     Realm realm;
     Context context = this;
+
+    // TensorFlow
+    private static final int INPUT_SIZE = 299; //224
+    private static final int IMAGE_MEAN = 128; //117
+    private static final float IMAGE_STD = 128f; //1
+    private static final String INPUT_NAME = "Mul";
+    private static final String OUTPUT_NAME = "final_result";
+
+    private static final String MODEL_FILE = "file:///android_asset/optimized_graph.pb";
+    private static final String LABEL_FILE =
+            "file:///android_asset/retrained_labels.txt";
+
+    private Classifier classifier;
+    private Executor executor = Executors.newSingleThreadExecutor();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +68,7 @@ public class AddClothesActivity extends AppCompatActivity implements View.OnClic
 
         takePicture.setOnClickListener(this);
         insertDB.setOnClickListener(this);
-
+        initTensorFlowAndLoadModel();
     }
 
     @Override
@@ -172,6 +190,8 @@ public class AddClothesActivity extends AppCompatActivity implements View.OnClic
         thumbnail = (Bitmap)data.getExtras().get("data");
         Bitmap finalBitmap = GetRotatedBitmap(thumbnail, 90);
         picture.setImageBitmap(finalBitmap);
+        final List<Classifier.Recognition> results = classifier.recognizeImage(finalBitmap);
+        resultShow.setText(results.toString());
     }
 
     // 이미지 뷰에 있는 것을 가져와서 byte로 변환 후 저장
@@ -300,5 +320,31 @@ public class AddClothesActivity extends AppCompatActivity implements View.OnClic
     protected void onDestroy() {
         super.onDestroy();
         realm.close();
+        executor.execute(new Runnable() {
+            @Override
+            public void run() {
+                classifier.close();
+            }
+        });
+    }
+    private void initTensorFlowAndLoadModel() {
+        executor.execute(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    classifier = TensorFlowImageClassifier.create(
+                            getAssets(),
+                            MODEL_FILE,
+                            LABEL_FILE,
+                            INPUT_SIZE,
+                            IMAGE_MEAN,
+                            IMAGE_STD,
+                            INPUT_NAME,
+                            OUTPUT_NAME);
+                } catch (final Exception e) {
+                    throw new RuntimeException("Error initializing TensorFlow!", e);
+                }
+            }
+        });
     }
 }

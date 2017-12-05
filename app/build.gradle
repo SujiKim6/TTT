@@ -2,12 +2,12 @@ apply plugin: 'com.android.application'
 apply plugin: 'realm-android'
 
 android {
-    compileSdkVersion 26
-    buildToolsVersion "26.0.1"
+    compileSdkVersion 25 //26
+    buildToolsVersion "25.0.2" //26.0.1
     defaultConfig {
         applicationId "com.sujikim.ttt"
         minSdkVersion 16
-        targetSdkVersion 26
+        targetSdkVersion 25 //26
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -28,10 +28,11 @@ dependencies {
     //volley라는 라이브러리 추가
     //volley라는 라이브러리는 http, 즉 네트워크와 통신할 수 있게 해줌, 이는 DB 연결을 위함
     // add library called volley/ volley helps to communicate with network
-    compile 'com.android.support:appcompat-v7:26.+'
+    compile 'com.android.support:appcompat-v7:25.1.1' //26.+
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.android.volley:volley:1.0.0'
-    compile 'org.tensorflow:tensorflow-android:+'
-    compile 'com.android.support:design:26.+'
+//    compile 'org.tensorflow:tensorflow-android:+'
+    compile 'com.android.support:design:25.+' // 26.+
     testCompile 'junit:junit:4.12'
+    compile files('libs/libandroid_tensorflow_inference_java.jar')
 }
