@@ -18,6 +18,13 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.sujikim.ttt.model.Jackets;
+import com.sujikim.ttt.model.LongPants;
+import com.sujikim.ttt.model.LongT;
+import com.sujikim.ttt.model.Padding;
+import com.sujikim.ttt.model.ShortPants;
+import com.sujikim.ttt.model.ShortT;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -27,11 +34,16 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import io.realm.Realm;
+import io.realm.RealmResults;
+
 public class MainActivity extends AppCompatActivity {
 
     // 옷 등록 버튼
     private Button addClothes;
 
+    // 옷추천을 위한 변수들
+    private double average;
     private Button recommendClothes;
     private RecommendActivity RA = new RecommendActivity();
 
@@ -46,10 +58,11 @@ public class MainActivity extends AppCompatActivity {
     private double lat = 37.6291;
     private double lon = 127.0897;
 
-    // 옷추천을 위한 변수들
-    private double average;
-
+    // 나의 옷장에 들어가기 위한 변수
     private Button closet;
+
+    // Realm DB 날리기 위해 임시방편으로 사용
+//    Realm realm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +78,29 @@ public class MainActivity extends AppCompatActivity {
         closet = (Button) findViewById(R.id.btnCloset);
 
         recommendClothes = (Button)findViewById(R.id.clothes);
+
+        // Realm DB 날리기 위해 임시방편으로 사용
+//        realm = Realm.getDefaultInstance();
+//        final RealmResults<LongPants> lp =  realm.where(LongPants.class).findAll();
+//        final RealmResults<LongT> lt =  realm.where(LongT.class).findAll();
+//        final RealmResults<ShortPants> sp =  realm.where(ShortPants.class).findAll();
+//        final RealmResults<ShortT> st =  realm.where(ShortT.class).findAll();
+//        final RealmResults<Padding> pad =  realm.where(Padding.class).findAll();
+//        final RealmResults<Jackets> jac =  realm.where(Jackets.class).findAll();
+//
+//        realm.executeTransaction(new Realm.Transaction(){
+//            @Override
+//            public void execute(Realm realm){
+//                lp.deleteAllFromRealm();
+//                lt.deleteAllFromRealm();
+//                sp.deleteAllFromRealm();
+//                st.deleteAllFromRealm();
+//                pad.deleteAllFromRealm();
+//                jac.deleteAllFromRealm();
+//            }
+//        });
+
+
 
         addClothes.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -256,5 +292,12 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
+
+    // Realm DB 날리기 위해 임시방편으로 사용
+//    @Override
+//    protected void onDestroy() {
+//        super.onDestroy();
+//        realm.close();
+//    }
 
 }
