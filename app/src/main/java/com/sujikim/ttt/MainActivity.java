@@ -94,8 +94,8 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-//                Intent closetIntent = new Intent(MainActivity.this, .class);
-//                MainActivity.this.startActivity(closetIntent);
+                Intent closetIntent = new Intent(MainActivity.this, ClosetActivity.class);
+                MainActivity.this.startActivity(closetIntent);
             }
         });
         currentMyLocation();

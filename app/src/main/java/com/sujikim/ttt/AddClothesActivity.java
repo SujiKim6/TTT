@@ -79,7 +79,6 @@ public class AddClothesActivity extends AppCompatActivity implements View.OnClic
                                     nextNum = num.intValue() + 1;
                                 }
                                 Jackets jac = realm.createObject(Jackets.class, nextNum);
-//                                jac.setNum(nextNum);
                                 jac.setImageData(pictureData);
 
                                 Toast.makeText(context,"JacketDB에 저장 성공!",Toast.LENGTH_SHORT).show();
