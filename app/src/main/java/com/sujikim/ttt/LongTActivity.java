@@ -11,16 +11,19 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.GridView;
 
+import com.sujikim.ttt.model.Jackets;
 import com.sujikim.ttt.model.LongT;
+
+import java.util.ArrayList;
 
 import io.realm.Realm;
 import io.realm.RealmResults;
 
 public class LongTActivity extends AppCompatActivity {
     Realm realm;
-    Bitmap realmImages;
+    Bitmap realmImage;
     RealmResults<LongT> longTs;
-    byte[] getResult;
+    ArrayList<Bitmap> realmImages = new ArrayList<>();
     Context context = this;
 
     @Override
@@ -34,29 +37,19 @@ public class LongTActivity extends AppCompatActivity {
 
         realm = Realm.getDefaultInstance();
 
-//        realm.executeTransaction(new Realm.Transaction() {
-//            @Override
-//            public void execute(Realm realm) {
-//                longTs = realm.where(LongT.class).findAll();
-//                for(LongT lt : longTs) {
-//                    realmImages = byteToBitmap(lt.getImageData());
-//                    gridView.setAdapter(new ImageAdapter(context,realmImages));
-//                }
-//
-//            }
-//        });
+        realm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                longTs = realm.where(LongT.class).findAll();
+                for(LongT lt : longTs) {
+                    realmImage = byteToBitmap(lt.getImageData());
+                    realmImages.add(realmImage);
+                }
 
+            }
+        });
+        gridView.setAdapter(new ImageAdapter(context,realmImages));
 
-//        gridView.setAdapter(new ImageAdapter(this));
-
-//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-//            }
-//        });
     }
 
     protected Bitmap byteToBitmap(byte[] original) {

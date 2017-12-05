@@ -10,6 +10,9 @@ import android.widget.GridView;
 
 import com.sujikim.ttt.model.Jackets;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import io.realm.Realm;
 import io.realm.RealmResults;
 
@@ -17,11 +20,9 @@ public class JacketActivity extends AppCompatActivity {
 
     Realm realm;
     Bitmap realmImage;
-    Bitmap[] realmImages;
+    ArrayList<Bitmap> realmImages = new ArrayList<>();
     RealmResults<Jackets> jackets;
-    byte[] getResult;
     Context context = this;
-    int i = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,8 +41,7 @@ public class JacketActivity extends AppCompatActivity {
                 jackets = realm.where(Jackets.class).findAll();
                 for(Jackets jac : jackets) {
                     realmImage = byteToBitmap(jac.getImageData());
-                    realmImages[i] = realmImage;
-                    i++;
+                    realmImages.add(realmImage);
                 }
             }
         });
