@@ -11,7 +11,6 @@ import android.widget.GridView;
 import com.sujikim.ttt.model.Jackets;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import io.realm.Realm;
 import io.realm.RealmResults;

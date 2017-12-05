@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.widget.GridView;
 
 import com.sujikim.ttt.model.LongPants;
 
@@ -27,6 +28,23 @@ public class LongPantsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_long_pants);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        final GridView gridView = (GridView) findViewById(R.id.grid_view);
+
+        realm = Realm.getDefaultInstance();
+
+        realm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                longPants = realm.where(LongPants.class).findAll();
+                for(LongPants lp : longPants) {
+                    realmImage = byteToBitmap(lp.getImageData());
+                    realmImages.add(realmImage);
+                }
+
+            }
+        });
+        gridView.setAdapter(new ImageAdapter(context,realmImages));
     }
 
     protected Bitmap byteToBitmap(byte[] original) {
