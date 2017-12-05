@@ -7,4 +7,5 @@
     <string name="title_activity_short_pants">ShortPants(반바지)</string>
     <string name="title_activity_padding">Padding(두꺼운 외투)</string>
     <string name="title_activity_jacket">Jacket(얇은 외투)</string>
+    <string name="recommend">옷 추천</string>
 </resources>
