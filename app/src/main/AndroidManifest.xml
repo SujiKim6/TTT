@@ -35,7 +35,8 @@
         <activity
             android:name=".MainActivity"
             android:theme="@style/AppTheme2" />
-        <activity android:name=".AddClothesActivity">
+        <activity android:name=".AddClothesActivity"
+            android:theme="@style/AppTheme2">
 
             <!-- <intent-filter> -->
             <!-- <action android:name="android.intent.action.MAIN" /> -->
