@@ -88,8 +88,8 @@ public class AddClothesActivity extends AppCompatActivity implements View.OnClic
                         int nextNum;
                         Number  num;
                         byte[] pictureData = changeBitmapToByte();
-//                        switch (find) {
-//                            case "0": // jacket 일 경우 jacket DB에 저장
+                        switch (find) {
+                            case "0": // jacket 일 경우 jacket DB에 저장
                                 num = realm.where(Jackets.class).max("num");
                                 if(num == null) {
                                     nextNum = 1;
@@ -100,71 +100,71 @@ public class AddClothesActivity extends AppCompatActivity implements View.OnClic
                                 jac.setImageData(pictureData);
 
                                 Toast.makeText(context,"JacketDB에 저장 성공!",Toast.LENGTH_SHORT).show();
-//                                break;
-//                            case "1": // LongPants 일 경우
-//                                num = realm.where(LongPants.class).max("num");
-//                                if(num == null) {
-//                                    nextNum = 1;
-//                                } else {
-//                                    nextNum = num.intValue() + 1;
-//                                }
-//                                LongPants longP = realm.createObject(LongPants.class, nextNum);
-//                                longP.setImageData(pictureData);
-//
-//                                Toast.makeText(this, "LongPants DB에 사진 저장 성공!", Toast.LENGTH_SHORT).show();
-//                                break;
-//                            case "2": // LongT 일 경우
-//                                num = realm.where(LongT.class).max("num");
-//                                if(num == null) {
-//                                    nextNum = 1;
-//                                } else {
-//                                    nextNum = num.intValue() + 1;
-//                                }
-//                                LongT longT = realm.createObject(LongT.class, nextNum);
-//                                longT.setImageData(pictureData);
-//
-//                                Toast.makeText(this, "LongT DB에 사진 저장 성공!", Toast.LENGTH_SHORT).show();
-//                                break;
-//                            case "3": // Padding 일 경우
-//                                num = realm.where(Padding.class).max("num");
-//                                if(num == null) {
-//                                    nextNum = 1;
-//                                } else {
-//                                    nextNum = num.intValue() + 1;
-//                                }
-//                                Padding pad = realm.createObject(Padding.class, nextNum);
-//                                pad.setImageData(pictureData);
-//
-//                                Toast.makeText(this, "Padding DB에 사진 저장 성공!", Toast.LENGTH_SHORT).show();
-//                                break;
-//                            case "4": // ShortPants 일 경우
-//                                num = realm.where(ShortPants.class).max("num");
-//                                if(num == null) {
-//                                    nextNum = 1;
-//                                } else {
-//                                    nextNum = num.intValue() + 1;
-//                                }
-//                                ShortPants shortP = realm.createObject(ShortPants.class, nextNum);
-//                                shortP.setImageData(pictureData);
-//
-//                                Toast.makeText(this, "ShortPants DB에 사진 저장 성공!", Toast.LENGTH_SHORT).show();
-//                                break;
-//                            case "5": // ShortT 일 경우
-//                                num = realm.where(ShortT.class).max("num");
-//                                if(num == null) {
-//                                    nextNum = 1;
-//                                } else {
-//                                    nextNum = num.intValue() + 1;
-//                                }
-//                                ShortT shortT = realm.createObject(ShortT.class, nextNum);
-//                                shortT.setImageData(pictureData);
-//
-//                                Toast.makeText(this, "ShortT DB에 사진 저장 성공!", Toast.LENGTH_SHORT).show();
-//                                break;
-//                            default:
-//                                Toast.makeText(this, "DB에 사진 저장 실패!", Toast.LENGTH_SHORT).show();
-//                                break;
-//                        }
+                                break;
+                            case "1": // LongPants 일 경우
+                                num = realm.where(LongPants.class).max("num");
+                                if(num == null) {
+                                    nextNum = 1;
+                                } else {
+                                    nextNum = num.intValue() + 1;
+                                }
+                                LongPants longP = realm.createObject(LongPants.class, nextNum);
+                                longP.setImageData(pictureData);
+
+                                Toast.makeText(context, "LongPants DB에 사진 저장 성공!", Toast.LENGTH_SHORT).show();
+                                break;
+                            case "2": // LongT 일 경우
+                                num = realm.where(LongT.class).max("num");
+                                if(num == null) {
+                                    nextNum = 1;
+                                } else {
+                                    nextNum = num.intValue() + 1;
+                                }
+                                LongT longT = realm.createObject(LongT.class, nextNum);
+                                longT.setImageData(pictureData);
+
+                                Toast.makeText(context, "LongT DB에 사진 저장 성공!", Toast.LENGTH_SHORT).show();
+                                break;
+                            case "3": // Padding 일 경우
+                                num = realm.where(Padding.class).max("num");
+                                if(num == null) {
+                                    nextNum = 1;
+                                } else {
+                                    nextNum = num.intValue() + 1;
+                                }
+                                Padding pad = realm.createObject(Padding.class, nextNum);
+                                pad.setImageData(pictureData);
+
+                                Toast.makeText(context, "Padding DB에 사진 저장 성공!", Toast.LENGTH_SHORT).show();
+                                break;
+                            case "4": // ShortPants 일 경우
+                                num = realm.where(ShortPants.class).max("num");
+                                if(num == null) {
+                                    nextNum = 1;
+                                } else {
+                                    nextNum = num.intValue() + 1;
+                                }
+                                ShortPants shortP = realm.createObject(ShortPants.class, nextNum);
+                                shortP.setImageData(pictureData);
+
+                                Toast.makeText(context, "ShortPants DB에 사진 저장 성공!", Toast.LENGTH_SHORT).show();
+                                break;
+                            case "5": // ShortT 일 경우
+                                num = realm.where(ShortT.class).max("num");
+                                if(num == null) {
+                                    nextNum = 1;
+                                } else {
+                                    nextNum = num.intValue() + 1;
+                                }
+                                ShortT shortT = realm.createObject(ShortT.class, nextNum);
+                                shortT.setImageData(pictureData);
+
+                                Toast.makeText(context, "ShortT DB에 사진 저장 성공!", Toast.LENGTH_SHORT).show();
+                                break;
+                            default:
+                                Toast.makeText(context, "DB에 사진 저장 실패!", Toast.LENGTH_SHORT).show();
+                                break;
+                        }
 
                     }
                 });
