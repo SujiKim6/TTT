@@ -40,8 +40,8 @@ public class MainActivity extends AppCompatActivity {
 
     // GPS를 위한 변수들
     private LocationManager locationManager;
-    private double lat;
-    private double lon;
+    private double lat = 37.6291;
+    private double lon = 127.0897;
 
     // 옷추천을 위한 변수들
     private double average;
@@ -109,7 +109,7 @@ public class MainActivity extends AppCompatActivity {
 
         // GPSListener 객체 생성 (LocationListener 인터페이스 정의 필요)
         GPSListener gpsListener = new GPSListener();
-        long minTime = 10000; //1초마다
+        long minTime = 1000; //1초마다
         float minDistance = 0;
 
         try {
@@ -133,7 +133,7 @@ public class MainActivity extends AppCompatActivity {
                 lat = lastLocation.getLatitude();
                 lon = lastLocation.getLongitude();
 
-//                Toast.makeText(getApplicationContext(), "마지막 위치 : " + "Latitude : " + lat + "\nLongitude:" + lon, Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "마지막 위치 : " + "Latitude : " + lat + "\nLongitude:" + lon, Toast.LENGTH_LONG).show();
                 getWeatherData(lat,lon);
             }
         } catch(SecurityException ex) {
@@ -155,7 +155,7 @@ public class MainActivity extends AppCompatActivity {
             Log.i("GPSListener", msg);
 
 
-//            Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
             getWeatherData(lat,lon);
         }
 
