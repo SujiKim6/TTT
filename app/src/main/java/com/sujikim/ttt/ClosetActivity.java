@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -35,6 +36,22 @@ public class ClosetActivity extends AppCompatActivity {
                 }else if(selectString.equals("반  팔")) {
                     Intent shortT = new Intent(ClosetActivity.this, ShortTActivity.class);
                     ClosetActivity.this.startActivity(shortT);
+
+                }else if(selectString.equals("긴 바지")) {
+                    Intent longPants = new Intent(ClosetActivity.this, LongPantsActivity.class);
+                    ClosetActivity.this.startActivity(longPants);
+
+                }else if(selectString.equals("반 바지")) {
+                    Intent shortPants = new Intent(ClosetActivity.this, ShortPantsActivity.class);
+                    ClosetActivity.this.startActivity(shortPants);
+
+                }else if(selectString.equals("두꺼운 외투")) {
+                    Intent padding = new Intent(ClosetActivity.this, PaddingActivity.class);
+                    ClosetActivity.this.startActivity(padding);
+
+                }else if(selectString.equals("얇은 외투")) {
+                    Intent jacket = new Intent(ClosetActivity.this, JacketActivity.class);
+                    ClosetActivity.this.startActivity(jacket);
 
                 }
 
