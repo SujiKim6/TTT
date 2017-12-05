@@ -16,10 +16,11 @@
             android:id="@+id/showTakenPicture"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="70dp"
             app:srcCompat="@android:drawable/ic_menu_gallery"
             tools:layout_editor_absoluteX="176dp"
             tools:layout_editor_absoluteY="171dp"
-            android:layout_marginTop="140dp"
+            android:foregroundGravity="center"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true" />
 
@@ -29,6 +30,7 @@
             android:layout_height="40dp"
             android:layout_marginTop="25dp"
             android:background="@drawable/bt_corner"
+            android:foregroundGravity="center"
             android:text="사진 촬영"
             android:textColor="#ffffff"
             android:layout_below="@+id/resultTextview"
@@ -37,11 +39,26 @@
         <TextView
             android:id="@+id/resultTextview"
             android:layout_width="250dp"
-            android:layout_height="40dp"
-            android:layout_marginTop="47dp"
-            android:gravity="center"
-            android:text="결과 값 출력"
+            android:layout_height="55dp"
             android:layout_below="@+id/showTakenPicture"
-            android:layout_centerHorizontal="true" />
+            android:layout_centerHorizontal="true"
+            android:foregroundGravity="center"
+            android:layout_marginTop="55dp"
+            android:gravity="center"
+            android:text="결과 값 출력" />
+
+        <Button
+            android:id="@+id/btnInsertDB"
+            android:layout_width="200dp"
+            android:layout_height="40dp"
+            android:layout_alignLeft="@+id/btnTakePicture"
+            android:layout_alignStart="@+id/btnTakePicture"
+            android:background="@drawable/bt_corner"
+            android:foregroundGravity="center"
+            android:textColor="#ffffff"
+            android:layout_below="@+id/btnTakePicture"
+            android:layout_marginTop="14dp"
+            android:text="저       장" />
     </RelativeLayout>
+
 </android.support.constraint.ConstraintLayout>

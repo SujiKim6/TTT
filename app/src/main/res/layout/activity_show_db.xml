@@ -4,13 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.sujikim.ttt.MyClosetActivity">
+    tools:context="com.sujikim.ttt.ShowDBActivity">
 
-    <ListView
-        android:id="@+id/MyList"
-        android:layout_width="0dp"
-        android:layout_height="501dp"
-        tools:layout_editor_absoluteY="8dp"
-        tools:layout_editor_absoluteX="0dp"></ListView>
-
+    <ImageView
+        android:id="@+id/resultImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/loginlogo"
+        tools:layout_editor_absoluteX="124dp"
+        tools:layout_editor_absoluteY="112dp" />
 </android.support.constraint.ConstraintLayout>
