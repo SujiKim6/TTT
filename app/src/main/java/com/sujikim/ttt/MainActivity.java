@@ -32,6 +32,9 @@ public class MainActivity extends AppCompatActivity {
     // 옷 등록 버튼
     private Button addClothes;
 
+    private Button recommendClothes;
+    private RecommendActivity RA = new RecommendActivity();
+
     // 날씨 출력 변수들
     private TextView currentCity;
     private TextView currentTemperature;
@@ -61,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
         lowTemperature = (TextView)findViewById(R.id.lowTemp);
         closet = (Button) findViewById(R.id.btnCloset);
 
+        recommendClothes = (Button)findViewById(R.id.clothes);
 
         addClothes.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -98,6 +102,14 @@ public class MainActivity extends AppCompatActivity {
                 MainActivity.this.startActivity(closetIntent);
             }
         });
+        recommendClothes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent recommendIntent = new Intent(MainActivity.this, RecommendActivity.class);
+                MainActivity.this.startActivity(recommendIntent);
+            }
+        });
+
         currentMyLocation();
     }
 
@@ -230,8 +242,8 @@ public class MainActivity extends AppCompatActivity {
                     city = result.getString("name");
 
                     average = (Double.parseDouble(minTemp) + Double.parseDouble(maxTemp))/2.0;
+                    RA.setAverageTemp(average);
 
-//                    averageTemperature.setText(String.valueOf(average));
                     currentCity.setText(String.valueOf(city));
                     currentTemperature.setText(String.valueOf(curTemp));
                     highTemperature.setText("   "+String.valueOf(maxTemp)+"  ");
