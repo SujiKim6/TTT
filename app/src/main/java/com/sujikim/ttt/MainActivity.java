@@ -45,7 +45,6 @@ public class MainActivity extends AppCompatActivity {
     // 옷추천을 위한 변수들
     private double average;
     private Button recommendClothes;
-    private RecommendActivity RA = new RecommendActivity();
 
     // 날씨 출력 변수들
     private TextView currentCity;
@@ -150,14 +149,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // 위치 정보 확인 메서드
-    private void currentMyLocation() {
+    public void currentMyLocation() {
 
         // LocationManager 객체 생성 (LOCATION_SERVICE 사용)
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
         // GPSListener 객체 생성 (LocationListener 인터페이스 정의 필요)
         GPSListener gpsListener = new GPSListener();
-        long minTime = 1000; //1초마다
+        long minTime = 10000; //1초마다
         float minDistance = 0;
 
         try {
@@ -220,7 +219,7 @@ public class MainActivity extends AppCompatActivity {
     // 위도 경도에 따른 현재 온도 가져오기
     private void getWeatherData (double lat, double lng) {
         String url = "http://api.openweathermap.org/data/2.5/weather?lat="+lat+"&lon="+
-                lng+"&appid=10f6fc8cfbff125d7da532526029b553&units=metric&lang=kr";
+                lng+"&appid=2207f2763b70f27dae0bd41076b886a0&units=metric&lang=kr";
         ReceiveWeatherTask receiverUseTask = new ReceiveWeatherTask();
         receiverUseTask.execute(url);
     }
@@ -277,8 +276,9 @@ public class MainActivity extends AppCompatActivity {
                     description = result.getJSONArray("weather").getJSONObject(0).getString("description");
                     city = result.getString("name");
 
-                    average = (Double.parseDouble(minTemp) + Double.parseDouble(maxTemp))/2.0;
-                    RA.setAverageTemp(average);
+//                    average = (Double.parseDouble(minTemp) + Double.parseDouble(maxTemp))/2.0;
+//                    average = Double.parseDouble(minTemp) + ((Double.parseDouble(maxTemp) - Double.parseDouble(minTemp))/2.0);
+                    calculateAverage(Double.parseDouble(minTemp), Double.parseDouble(maxTemp));
 
                     currentCity.setText(String.valueOf(city));
                     currentTemperature.setText(String.valueOf(curTemp));
@@ -291,6 +291,14 @@ public class MainActivity extends AppCompatActivity {
                 final String msg = description + "최저" +minTemp + "/ 최고:"+maxTemp;
             }
         }
+    }
+
+    private void calculateAverage(double min, double max) {
+        average = min + ((max-min)/2.0);
+    }
+
+    public double getAverage() {
+        return average;
     }
 
     // Realm DB 날리기 위해 임시방편으로 사용
