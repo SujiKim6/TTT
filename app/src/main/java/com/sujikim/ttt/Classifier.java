@@ -100,7 +100,6 @@ public interface Classifier {
             if (location != null) {
                 resultString += location + " ";
             }
-
             return resultString.trim();
         }
     }
