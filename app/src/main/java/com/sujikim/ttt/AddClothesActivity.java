@@ -88,6 +88,7 @@ public class AddClothesActivity extends AppCompatActivity implements View.OnClic
                         String find = buf.substring(2,3);
                         int nextNum;
                         Number  num;
+
                         byte[] pictureData = changeBitmapToByte();
                         switch (find) {
                             case "0": // jacket 일 경우 jacket DB에 저장
@@ -195,7 +196,7 @@ public class AddClothesActivity extends AppCompatActivity implements View.OnClic
 //        resultShow.setText(results.toString());
 
         thumbnail = (Bitmap)data.getExtras().get("data");
-//        thumbnail = Bitmap.createScaledBitmap(thumbnail, INPUT_SIZE, INPUT_SIZE, false); //이걸 넣으니까 패딩이 인식된다 그러나 반바지, 반팔이 인식이 안됨.
+        thumbnail = Bitmap.createScaledBitmap(thumbnail, INPUT_SIZE, INPUT_SIZE, false); //이걸 넣으니까 패딩이 인식된다 그러나 반바지, 반팔이 인식이 안됨.
         picture.setImageBitmap(thumbnail);
         final List<Classifier.Recognition> results = classifier.recognizeImage(thumbnail);
         resultShow.setText(results.toString());
@@ -213,6 +214,7 @@ public class AddClothesActivity extends AppCompatActivity implements View.OnClic
         byte[] resultData = baos.toByteArray();
         return resultData;
     }
+
 //
 //    private void setThumbnailImage(String orgImagePath) {
 //        // 회전 각도 취득

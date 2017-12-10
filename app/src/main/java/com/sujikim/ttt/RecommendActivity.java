@@ -113,37 +113,55 @@ public class RecommendActivity extends AppCompatActivity {
                 if (buf != null) {
                     lpCount = buf.intValue();
                 }
+                else {
+                    lpCount = 0;
+                }
                 buf =  realm.where(LongT.class).max("num");
                 if (buf != null) {
                     ltCount = buf.intValue();
+                }
+                else {
+                    ltCount = 0;
                 }
                 buf =  realm.where(ShortPants.class).max("num");
                 if (buf != null) {
                     spCount = buf.intValue();
                 }
+                else {
+                    spCount = 0;
+                }
                 buf =  realm.where(ShortT.class).max("num");
                 if (buf != null) {
                     stCount = buf.intValue();
+                }
+                else {
+                    stCount = 0;
                 }
                 buf =  realm.where(Padding.class).max("num");
                 if (buf != null) {
                     padCount = buf.intValue();
                 }
+                else {
+                    padCount = 0;
+                }
                 buf =  realm.where(Jackets.class).max("num");
                 if (buf != null) {
                     jacCount = buf.intValue();
                 }
-                if (buf != null) {
-                    getRandomNumber();
-                    getClothes();
+                else {
+                    jacCount = 0;
                 }
+
             }
         });
-//        getRandomNumber();
-//        getClothes();
-//
+
         currentMyLocation();
         getWeatherData(lat,lon);
+
+        if((stCount>=1)||(spCount>=1)||(lpCount>=1)||(ltCount>=1)||(padCount>=1)||(jacCount>=1)) {
+            getRandomNumber();
+            getClothes();
+        }
     }
 
     //날씨에 따라 랜덤한 숫자를 가져오는 함수 + 추운날씨에는 text도 설정하기
@@ -151,30 +169,130 @@ public class RecommendActivity extends AppCompatActivity {
         // 27도 이상일 경우 반팔, 반바지
         // 23도에서 26도 사이일 경우도 반팔, 반바지
         if (averageTemp >= 23) {
-            for(int i = 0; i < 3; i++) {
-                randomShortT[i] = random.nextInt(stCount) + 1;
-                randomShortPants[i] = random.nextInt(spCount) + 1;
+            if(stCount != 0) {
+                for(int i = 0; i < 3; i++) { // 반팔 3개 추출
+                    randomShortT[i] = random.nextInt(stCount) + 1;
+                    if(stCount == 1) {
+                        break;
+                    }
+                    else {
+                        for(int j=0;j<i;j++){
+                            if(randomShortT[i] == randomShortT[j]) {
+                                i--;
+                                break;
+                            }
+                        }
+                    }
+                    if((stCount == 2) && (i == 1)) {
+                        break;
+                    }
+                }
+            }
+            if(spCount != 0){
+                for(int i = 0; i < 3; i++) { // 반바지 3개 추출
+                    randomShortPants[i] = random.nextInt(spCount) + 1;
+                    if(spCount == 1) {
+                        break;
+                    }
+                    else {
+                        for(int j=0;j<i;j++){
+                            if(randomShortPants[i] == randomShortPants[j]) {
+                                i--;
+                                break;
+                            }
+                        }
+                    }
+                    if((spCount == 2) && (i == 1)) {
+                        break;
+                    }
+                }
             }
         }
 
         // 20도에서 22도는 반팔두개, 긴팔 한개/ 긴바지 3개
         else if ((averageTemp >= 20) && (averageTemp <= 22)) {
-            for(int i = 0; i < 2; i++) { // 반팔 두개 추출
-                randomShortT[i] = random.nextInt(stCount) + 1;
+            if(stCount != 0){
+                for(int i = 0; i < 2; i++) { // 반팔 두개 추출
+                    randomShortT[i] = random.nextInt(stCount) + 1;
+                    if(stCount == 1) {
+                        break;
+                    }
+                    else {
+                        for(int j=0;j<i;j++){
+                            if(randomShortT[i] == randomShortT[j]) {
+                                i--;
+                                break;
+                            }
+                        }
+                    }
+                }
             }
-            randomShortT[2] = 0;
-            randomLongT[0] = random.nextInt(ltCount) + 1;
-            for(int i = 0; i < 3; i++) { // 긴바지 3개 추출
-                randomLongPants[i] = random.nextInt(lpCount) + 1;
+
+            if(ltCount != 0){
+                randomLongT[0] = random.nextInt(ltCount) + 1; // 긴팔 한개 추출
+            }
+            if(lpCount != 0){
+                for(int i = 0; i < 3; i++) { // 긴바지 3개 추출
+                    randomLongPants[i] = random.nextInt(lpCount) + 1;
+                    if(lpCount == 1) {
+                        break;
+                    }
+                    else {
+                        for(int j=0;j<i;j++){
+                            if(randomLongPants[i] == randomLongPants[j]) {
+                                i--;
+                                break;
+                            }
+                        }
+                    }
+                    if((lpCount == 2) && (i == 1)) {
+                        break;
+                    }
+                }
             }
         }
 
 
         // 17도에서 19도는 긴팔 세개 긴바지 3개
         else if ((averageTemp >= 17) && (averageTemp <= 19)) {
-            for(int i = 0; i < 3; i++) {
-                randomLongT[i] = random.nextInt(ltCount) + 1;
-                randomLongPants[i] = random.nextInt(lpCount) + 1;
+            if(ltCount != 0) {
+                for(int i = 0; i < 3; i++) { // 긴팔 3개 추출
+                    randomLongT[i] = random.nextInt(ltCount) + 1;
+                    if(ltCount == 1) {
+                        break;
+                    }
+                    else {
+                        for(int j=0;j<i;j++){
+                            if(randomLongT[i] == randomLongT[j]) {
+                                i--;
+                                break;
+                            }
+                        }
+                    }
+                    if((ltCount == 2) && (i == 1)) {
+                        break;
+                    }
+                }
+            }
+
+            if(lpCount != 0) {
+                for(int i = 0; i < 3; i++) { // 긴바지 3개 추출
+                    randomLongPants[i] = random.nextInt(lpCount) + 1;
+                    if(lpCount == 1) {
+                        break;
+                    }
+                    else {
+                        for(int j=0;j<i;j++){
+                            if(randomLongPants[i] == randomLongPants[j]) {
+                                i--;
+                                break;
+                            }
+                        }
+                    }
+                    if((lpCount == 2) && (i == 1)) {
+                        break;
+                    }
+                }
             }
         }
 
@@ -182,21 +300,128 @@ public class RecommendActivity extends AppCompatActivity {
         // 10도에서 11도는 자켓 3개 긴팔3개 긴바지 3개
         // 6도에서 9도는 자켓 3개, 긴팔3개 긴바지 3개
         else if ((averageTemp >= 6) && (averageTemp <= 16)) {
-            for(int i = 0; i < 3; i++) {
-                randomLongT[i] = random.nextInt(ltCount) + 1;
-                randomLongPants[i] = random.nextInt(lpCount) + 1;
-                randomJackets[i] = random.nextInt(jacCount) + 1;
+            if(ltCount != 0){
+                for(int i = 0; i < 3; i++) { // 긴팔 3개 추출
+                    randomLongT[i] = random.nextInt(ltCount) + 1;
+                    if(ltCount == 1) {
+                        break;
+                    }
+                    else {
+                        for(int j=0;j<i;j++){
+                            if(randomLongT[i] == randomLongT[j]) {
+                                i--;
+                                break;
+                            }
+                        }
+                    }
+                    if((ltCount == 2) && (i == 1)) {
+                        break;
+                    }
+                }
+            }
+
+            if(lpCount != 0){
+                for(int i = 0; i < 3; i++) { // 긴바지 3개 추출
+                    randomLongPants[i] = random.nextInt(lpCount) + 1;
+                    if(lpCount == 1) {
+                        break;
+                    }
+                    else {
+                        for(int j=0;j<i;j++){
+                            if(randomLongPants[i] == randomLongPants[j]) {
+                                i--;
+                                break;
+                            }
+                        }
+                    }
+                    if((lpCount == 2) && (i == 1)) {
+                        break;
+                    }
+                }
+            }
+
+            if(jacCount != 0) {
+                for(int i = 0; i < 3; i++) { // 자켓 3개 추출
+                    randomJackets[i] = random.nextInt(jacCount) + 1;
+                    if(jacCount == 1) {
+                        break;
+                    }
+                    else {
+                        for(int j=0;j<i;j++){
+                            if(randomJackets[i] == randomJackets[j]) {
+                                i--;
+                                break;
+                            }
+                        }
+                    }
+                    if((jacCount == 2) && (i == 1)) {
+                        break;
+                    }
+                }
             }
         }
 
         // 5도 이하는 패딩 3개, 긴팔3개 긴바지3개
         else if(averageTemp <= 5) {
-            for(int i = 0; i < 3; i++) {
-                randomLongT[i] = random.nextInt(ltCount) + 1;
-                randomLongPants[i] = random.nextInt(lpCount) + 1;
-                randomPadding[i] = random.nextInt(padCount) + 1;
+            if(ltCount != 0) {
+                for(int i = 0; i < 3; i++) { // 긴팔 3개 추출
+                    randomLongT[i] = random.nextInt(ltCount) + 1;
+                    if(ltCount == 1) {
+                        break;
+                    }
+                    else {
+                        for(int j=0;j<i;j++){
+                            if(randomLongT[i] == randomLongT[j]) {
+                                i--;
+                                break;
+                            }
+                        }
+                    }
+                    if((ltCount == 2) && (i == 1)) {
+                        break;
+                    }
+                }
+            }
+            if(lpCount != 0) {
+                for(int i = 0; i < 3; i++) { // 긴바지 3개 추출
+                    randomLongPants[i] = random.nextInt(lpCount) + 1;
+                    if(lpCount == 1) {
+                        break;
+                    }
+                    else {
+                        for(int j=0;j<i;j++){
+                            if(randomLongPants[i] == randomLongPants[j]) {
+                                i--;
+                                break;
+                            }
+                        }
+                    }
+                    if((lpCount == 2) && (i == 1)) {
+                        break;
+                    }
+                }
+            }
+            if(padCount != 0) {
+                for(int i = 0; i < 3; i++) { // 패딩 3개 추출
+                    randomPadding[i] = random.nextInt(padCount) + 1;
+                    if(padCount == 1) {
+                        break;
+                    }
+                    else {
+                        for(int j=0;j<i;j++){
+                            if(randomPadding[i] == randomPadding[j]) {
+                                i--;
+                                break;
+                            }
+                        }
+                    }
+                    if((padCount == 2) && (i == 1)) {
+                        break;
+                    }
+                }
             }
         }
+
     }
 
     //옷들을 DB에서 가져오기
@@ -207,103 +432,242 @@ public class RecommendActivity extends AppCompatActivity {
                 // 27도 이상일 경우 반팔, 반바지
                 // 23도에서 26도 사이일 경우도 반팔, 반바지
                 if (averageTemp >= 23) {
-                    shortTs = realm.where(ShortT.class).equalTo("num",randomShortT[0]).findFirst();
-                    topOne.setImageBitmap(byteToBitmap(shortTs.getImageData()));
-                    shortTs = realm.where(ShortT.class).equalTo("num",randomShortT[1]).findFirst();
-                    topTwo.setImageBitmap(byteToBitmap(shortTs.getImageData()));
-                    shortTs = realm.where(ShortT.class).equalTo("num",randomShortT[2]).findFirst();
-                    topThree.setImageBitmap(byteToBitmap(shortTs.getImageData()));
-
-                    shortPantses = realm.where(ShortPants.class).equalTo("num",randomShortPants[0]).findFirst();
-                    bottomOne.setImageBitmap(byteToBitmap(shortPantses.getImageData()));
-                    shortPantses = realm.where(ShortPants.class).equalTo("num",randomShortPants[1]).findFirst();
-                    bottomTwo.setImageBitmap(byteToBitmap(shortPantses.getImageData()));
-                    shortPantses = realm.where(ShortPants.class).equalTo("num",randomShortPants[2]).findFirst();
-                    bottomThree.setImageBitmap(byteToBitmap(shortPantses.getImageData()));
+                    if(stCount == 1) {
+                        shortTs = realm.where(ShortT.class).equalTo("num",randomShortT[0]).findFirst();
+                        topOne.setImageBitmap(byteToBitmap(shortTs.getImageData()));
+                    }
+                    else if(stCount == 2) {
+                        shortTs = realm.where(ShortT.class).equalTo("num",randomShortT[0]).findFirst();
+                        topOne.setImageBitmap(byteToBitmap(shortTs.getImageData()));
+                        shortTs = realm.where(ShortT.class).equalTo("num",randomShortT[1]).findFirst();
+                        topTwo.setImageBitmap(byteToBitmap(shortTs.getImageData()));
+                    }
+                    else if(stCount >= 3) {
+                        shortTs = realm.where(ShortT.class).equalTo("num",randomShortT[0]).findFirst();
+                        topOne.setImageBitmap(byteToBitmap(shortTs.getImageData()));
+                        shortTs = realm.where(ShortT.class).equalTo("num",randomShortT[1]).findFirst();
+                        topTwo.setImageBitmap(byteToBitmap(shortTs.getImageData()));
+                        shortTs = realm.where(ShortT.class).equalTo("num",randomShortT[2]).findFirst();
+                        topThree.setImageBitmap(byteToBitmap(shortTs.getImageData()));
+                    }
+                    if(spCount == 1) {
+                        shortPantses = realm.where(ShortPants.class).equalTo("num",randomShortPants[0]).findFirst();
+                        bottomOne.setImageBitmap(byteToBitmap(shortPantses.getImageData()));
+                    }
+                    else if(spCount == 2) {
+                        shortPantses = realm.where(ShortPants.class).equalTo("num",randomShortPants[0]).findFirst();
+                        bottomOne.setImageBitmap(byteToBitmap(shortPantses.getImageData()));
+                        shortPantses = realm.where(ShortPants.class).equalTo("num",randomShortPants[1]).findFirst();
+                        bottomTwo.setImageBitmap(byteToBitmap(shortPantses.getImageData()));
+                    }
+                    else if(spCount >= 3){
+                        shortPantses = realm.where(ShortPants.class).equalTo("num",randomShortPants[0]).findFirst();
+                        bottomOne.setImageBitmap(byteToBitmap(shortPantses.getImageData()));
+                        shortPantses = realm.where(ShortPants.class).equalTo("num",randomShortPants[1]).findFirst();
+                        bottomTwo.setImageBitmap(byteToBitmap(shortPantses.getImageData()));
+                        shortPantses = realm.where(ShortPants.class).equalTo("num",randomShortPants[2]).findFirst();
+                        bottomThree.setImageBitmap(byteToBitmap(shortPantses.getImageData()));
+                    }
                 }
 
                 // 20도에서 22도는 반팔두개, 긴팔 한개/ 긴바지 3개
                 else if ((averageTemp >= 20) && (averageTemp <= 22)) {
-                    shortTs = realm.where(ShortT.class).equalTo("num",randomShortT[0]).findFirst();
-                    topOne.setImageBitmap(byteToBitmap(shortTs.getImageData()));
-                    shortTs = realm.where(ShortT.class).equalTo("num",randomShortT[1]).findFirst();
-                    longTs = realm.where(LongT.class).equalTo("num",randomLongT[0]).findFirst();
-                    topThree.setImageBitmap(byteToBitmap(longTs.getImageData()));
-
-                    longPantses = realm.where(LongPants.class).equalTo("num",randomLongPants[0]).findFirst();
-                    bottomOne.setImageBitmap(byteToBitmap(longPantses.getImageData()));
-                    longPantses = realm.where(LongPants.class).equalTo("num",randomLongPants[1]).findFirst();
-                    bottomTwo.setImageBitmap(byteToBitmap(longPantses.getImageData()));
-                    longPantses = realm.where(LongPants.class).equalTo("num",randomLongPants[2]).findFirst();
-                    bottomThree.setImageBitmap(byteToBitmap(longPantses.getImageData()));
+                    if(stCount == 1) {
+                        shortTs = realm.where(ShortT.class).equalTo("num",randomShortT[0]).findFirst();
+                        topOne.setImageBitmap(byteToBitmap(shortTs.getImageData()));
+                        if(ltCount == 1) {
+                            longTs = realm.where(LongT.class).equalTo("num",randomLongT[0]).findFirst();
+                            topTwo.setImageBitmap(byteToBitmap(longTs.getImageData()));
+                        }
+                    }
+                    else if(stCount >= 2) {
+                        shortTs = realm.where(ShortT.class).equalTo("num",randomShortT[0]).findFirst();
+                        topOne.setImageBitmap(byteToBitmap(shortTs.getImageData()));
+                        shortTs = realm.where(ShortT.class).equalTo("num",randomShortT[1]).findFirst();
+                        topTwo.setImageBitmap(byteToBitmap(shortTs.getImageData()));
+                        if(ltCount == 1) {
+                            longTs = realm.where(LongT.class).equalTo("num",randomLongT[0]).findFirst();
+                            topThree.setImageBitmap(byteToBitmap(longTs.getImageData()));
+                        }
+                    }
+                    if(lpCount == 1) {
+                        longPantses = realm.where(LongPants.class).equalTo("num",randomLongPants[0]).findFirst();
+                        bottomOne.setImageBitmap(byteToBitmap(longPantses.getImageData()));
+                    }
+                    else if(lpCount == 2) {
+                        longPantses = realm.where(LongPants.class).equalTo("num",randomLongPants[0]).findFirst();
+                        bottomOne.setImageBitmap(byteToBitmap(longPantses.getImageData()));
+                        longPantses = realm.where(LongPants.class).equalTo("num",randomLongPants[1]).findFirst();
+                        bottomTwo.setImageBitmap(byteToBitmap(longPantses.getImageData()));
+                    }
+                    else if(lpCount >= 3)  {
+                        longPantses = realm.where(LongPants.class).equalTo("num",randomLongPants[0]).findFirst();
+                        bottomOne.setImageBitmap(byteToBitmap(longPantses.getImageData()));
+                        longPantses = realm.where(LongPants.class).equalTo("num",randomLongPants[1]).findFirst();
+                        bottomTwo.setImageBitmap(byteToBitmap(longPantses.getImageData()));
+                        longPantses = realm.where(LongPants.class).equalTo("num",randomLongPants[2]).findFirst();
+                        bottomThree.setImageBitmap(byteToBitmap(longPantses.getImageData()));
+                    }
                 }
 
 
                 // 17도에서 19도는 긴팔 세개 긴바지 3개
                 else if ((averageTemp >= 17) && (averageTemp <= 19)) {
-                    longTs = realm.where(LongT.class).equalTo("num", randomLongT[0]).findFirst();
-                    topOne.setImageBitmap(byteToBitmap(longTs.getImageData()));
-                    longTs = realm.where(LongT.class).equalTo("num", randomLongT[1]).findFirst();
-                    topTwo.setImageBitmap(byteToBitmap(longTs.getImageData()));
-                    longTs = realm.where(LongT.class).equalTo("num", randomLongT[2]).findFirst();
-                    topThree.setImageBitmap(byteToBitmap(longTs.getImageData()));
-
-                    longPantses = realm.where(LongPants.class).equalTo("num",randomLongPants[0]).findFirst();
-                    bottomOne.setImageBitmap(byteToBitmap(longPantses.getImageData()));
-                    longPantses = realm.where(LongPants.class).equalTo("num",randomLongPants[1]).findFirst();
-                    bottomTwo.setImageBitmap(byteToBitmap(longPantses.getImageData()));
-                    longPantses = realm.where(LongPants.class).equalTo("num",randomLongPants[2]).findFirst();
-                    bottomThree.setImageBitmap(byteToBitmap(longPantses.getImageData()));
+                    if (ltCount == 1) {
+                        longTs = realm.where(LongT.class).equalTo("num", randomLongT[0]).findFirst();
+                        topOne.setImageBitmap(byteToBitmap(longTs.getImageData()));
+                    }
+                    else if(ltCount == 2) {
+                        longTs = realm.where(LongT.class).equalTo("num", randomLongT[0]).findFirst();
+                        topOne.setImageBitmap(byteToBitmap(longTs.getImageData()));
+                        longTs = realm.where(LongT.class).equalTo("num", randomLongT[1]).findFirst();
+                        topTwo.setImageBitmap(byteToBitmap(longTs.getImageData()));
+                    }
+                    else if(ltCount >= 3) {
+                        longTs = realm.where(LongT.class).equalTo("num", randomLongT[0]).findFirst();
+                        topOne.setImageBitmap(byteToBitmap(longTs.getImageData()));
+                        longTs = realm.where(LongT.class).equalTo("num", randomLongT[1]).findFirst();
+                        topTwo.setImageBitmap(byteToBitmap(longTs.getImageData()));
+                        longTs = realm.where(LongT.class).equalTo("num", randomLongT[2]).findFirst();
+                        topThree.setImageBitmap(byteToBitmap(longTs.getImageData()));
+                    }
+                    if (lpCount == 1) {
+                        longPantses = realm.where(LongPants.class).equalTo("num",randomLongPants[0]).findFirst();
+                        bottomOne.setImageBitmap(byteToBitmap(longPantses.getImageData()));
+                    }
+                    else if(lpCount == 2) {
+                        longPantses = realm.where(LongPants.class).equalTo("num",randomLongPants[0]).findFirst();
+                        bottomOne.setImageBitmap(byteToBitmap(longPantses.getImageData()));
+                        longPantses = realm.where(LongPants.class).equalTo("num",randomLongPants[1]).findFirst();
+                        bottomTwo.setImageBitmap(byteToBitmap(longPantses.getImageData()));
+                    }
+                    else if(lpCount >= 3) {
+                        longPantses = realm.where(LongPants.class).equalTo("num",randomLongPants[0]).findFirst();
+                        bottomOne.setImageBitmap(byteToBitmap(longPantses.getImageData()));
+                        longPantses = realm.where(LongPants.class).equalTo("num",randomLongPants[1]).findFirst();
+                        bottomTwo.setImageBitmap(byteToBitmap(longPantses.getImageData()));
+                        longPantses = realm.where(LongPants.class).equalTo("num",randomLongPants[2]).findFirst();
+                        bottomThree.setImageBitmap(byteToBitmap(longPantses.getImageData()));
+                    }
                 }
 
                 // 12도에서 16도는 자켓 3개 긴팔3개 긴바지3개
                 // 10도에서 11도는 자켓 3개 긴팔3개 긴바지 3개
                 // 6도에서 9도는 자켓 3개, 긴팔3개 긴바지 3개
                 else if ((averageTemp >= 6) && (averageTemp <= 16)) {
-                    longTs = realm.where(LongT.class).equalTo("num", randomLongT[0]).findFirst();
-                    topOne.setImageBitmap(byteToBitmap(longTs.getImageData()));
-                    longTs = realm.where(LongT.class).equalTo("num", randomLongT[1]).findFirst();
-                    topTwo.setImageBitmap(byteToBitmap(longTs.getImageData()));
-                    longTs = realm.where(LongT.class).equalTo("num", randomLongT[2]).findFirst();
-                    topThree.setImageBitmap(byteToBitmap(longTs.getImageData()));
+                    if (ltCount == 1) {
+                        longTs = realm.where(LongT.class).equalTo("num", randomLongT[0]).findFirst();
+                        topOne.setImageBitmap(byteToBitmap(longTs.getImageData()));
+                    }
+                    else if(ltCount == 2) {
+                        longTs = realm.where(LongT.class).equalTo("num", randomLongT[0]).findFirst();
+                        topOne.setImageBitmap(byteToBitmap(longTs.getImageData()));
+                        longTs = realm.where(LongT.class).equalTo("num", randomLongT[1]).findFirst();
+                        topTwo.setImageBitmap(byteToBitmap(longTs.getImageData()));
+                    }
+                    else if(ltCount >= 3){
+                        longTs = realm.where(LongT.class).equalTo("num", randomLongT[0]).findFirst();
+                        topOne.setImageBitmap(byteToBitmap(longTs.getImageData()));
+                        longTs = realm.where(LongT.class).equalTo("num", randomLongT[1]).findFirst();
+                        topTwo.setImageBitmap(byteToBitmap(longTs.getImageData()));
+                        longTs = realm.where(LongT.class).equalTo("num", randomLongT[2]).findFirst();
+                        topThree.setImageBitmap(byteToBitmap(longTs.getImageData()));
+                    }
+                    if (lpCount == 1) {
+                        longPantses = realm.where(LongPants.class).equalTo("num",randomLongPants[0]).findFirst();
+                        bottomOne.setImageBitmap(byteToBitmap(longPantses.getImageData()));
+                    }
+                    else if(lpCount == 2) {
+                        longPantses = realm.where(LongPants.class).equalTo("num",randomLongPants[0]).findFirst();
+                        bottomOne.setImageBitmap(byteToBitmap(longPantses.getImageData()));
+                        longPantses = realm.where(LongPants.class).equalTo("num",randomLongPants[1]).findFirst();
+                        bottomTwo.setImageBitmap(byteToBitmap(longPantses.getImageData()));
+                    }
+                    else if(lpCount >= 3){
+                        longPantses = realm.where(LongPants.class).equalTo("num",randomLongPants[0]).findFirst();
+                        bottomOne.setImageBitmap(byteToBitmap(longPantses.getImageData()));
+                        longPantses = realm.where(LongPants.class).equalTo("num",randomLongPants[1]).findFirst();
+                        bottomTwo.setImageBitmap(byteToBitmap(longPantses.getImageData()));
+                        longPantses = realm.where(LongPants.class).equalTo("num",randomLongPants[2]).findFirst();
+                        bottomThree.setImageBitmap(byteToBitmap(longPantses.getImageData()));
+                    }
+                    if(jacCount == 1) {
+                        jacketses = realm.where(Jackets.class).equalTo("num", randomJackets[0]).findFirst();
+                        outerOne.setImageBitmap(byteToBitmap(jacketses.getImageData()));
+                    }
+                    else if(jacCount == 2) {
+                        jacketses = realm.where(Jackets.class).equalTo("num", randomJackets[0]).findFirst();
+                        outerOne.setImageBitmap(byteToBitmap(jacketses.getImageData()));
+                        jacketses = realm.where(Jackets.class).equalTo("num", randomJackets[1]).findFirst();
+                        outerTwo.setImageBitmap(byteToBitmap(jacketses.getImageData()));
+                    }
+                    else if(jacCount >= 3){
+                        jacketses = realm.where(Jackets.class).equalTo("num", randomJackets[0]).findFirst();
+                        outerOne.setImageBitmap(byteToBitmap(jacketses.getImageData()));
+                        jacketses = realm.where(Jackets.class).equalTo("num", randomJackets[1]).findFirst();
+                        outerTwo.setImageBitmap(byteToBitmap(jacketses.getImageData()));
+                        jacketses = realm.where(Jackets.class).equalTo("num", randomJackets[2]).findFirst();
+                        outerThree.setImageBitmap(byteToBitmap(jacketses.getImageData()));
+                    }
 
-                    longPantses = realm.where(LongPants.class).equalTo("num",randomLongPants[0]).findFirst();
-                    bottomOne.setImageBitmap(byteToBitmap(longPantses.getImageData()));
-                    longPantses = realm.where(LongPants.class).equalTo("num",randomLongPants[1]).findFirst();
-                    bottomTwo.setImageBitmap(byteToBitmap(longPantses.getImageData()));
-                    longPantses = realm.where(LongPants.class).equalTo("num",randomLongPants[2]).findFirst();
-                    bottomThree.setImageBitmap(byteToBitmap(longPantses.getImageData()));
-
-                    jacketses = realm.where(Jackets.class).equalTo("num", randomJackets[0]).findFirst();
-                    outerOne.setImageBitmap(byteToBitmap(jacketses.getImageData()));
-                    jacketses = realm.where(Jackets.class).equalTo("num", randomJackets[1]).findFirst();
-                    outerTwo.setImageBitmap(byteToBitmap(jacketses.getImageData()));
-                    jacketses = realm.where(Jackets.class).equalTo("num", randomJackets[2]).findFirst();
-                    outerThree.setImageBitmap(byteToBitmap(jacketses.getImageData()));
                 }
 
                 // 5도 이하는 패딩 3개, 긴팔3개 긴바지3개
                 else if(averageTemp <= 5) {
-                    longTs = realm.where(LongT.class).equalTo("num", randomLongT[0]).findFirst();
-                    topOne.setImageBitmap(byteToBitmap(longTs.getImageData()));
-                    longTs = realm.where(LongT.class).equalTo("num", randomLongT[1]).findFirst();
-                    topTwo.setImageBitmap(byteToBitmap(longTs.getImageData()));
-                    longTs = realm.where(LongT.class).equalTo("num", randomLongT[2]).findFirst();
-                    topThree.setImageBitmap(byteToBitmap(longTs.getImageData()));
-
-                    longPantses = realm.where(LongPants.class).equalTo("num",randomLongPants[0]).findFirst();
-                    bottomOne.setImageBitmap(byteToBitmap(longPantses.getImageData()));
-                    longPantses = realm.where(LongPants.class).equalTo("num",randomLongPants[1]).findFirst();
-                    bottomTwo.setImageBitmap(byteToBitmap(longPantses.getImageData()));
-                    longPantses = realm.where(LongPants.class).equalTo("num",randomLongPants[2]).findFirst();
-                    bottomThree.setImageBitmap(byteToBitmap(longPantses.getImageData()));
-
-                    paddings = realm.where(Padding.class).equalTo("num", randomPadding[0]).findFirst();
-                    outerOne.setImageBitmap(byteToBitmap(paddings.getImageData()));
-                    paddings = realm.where(Padding.class).equalTo("num", randomPadding[1]).findFirst();
-                    outerTwo.setImageBitmap(byteToBitmap(paddings.getImageData()));
-                    paddings = realm.where(Padding.class).equalTo("num", randomPadding[2]).findFirst();
-                    outerThree.setImageBitmap(byteToBitmap(paddings.getImageData()));
+                    if (ltCount == 1) {
+                        longTs = realm.where(LongT.class).equalTo("num", randomLongT[0]).findFirst();
+                        topOne.setImageBitmap(byteToBitmap(longTs.getImageData()));
+                    }
+                    else if(ltCount == 2) {
+                        longTs = realm.where(LongT.class).equalTo("num", randomLongT[0]).findFirst();
+                        topOne.setImageBitmap(byteToBitmap(longTs.getImageData()));
+                        longTs = realm.where(LongT.class).equalTo("num", randomLongT[1]).findFirst();
+                        topTwo.setImageBitmap(byteToBitmap(longTs.getImageData()));
+                    }
+                    else if(ltCount >= 3){
+                        longTs = realm.where(LongT.class).equalTo("num", randomLongT[0]).findFirst();
+                        topOne.setImageBitmap(byteToBitmap(longTs.getImageData()));
+                        longTs = realm.where(LongT.class).equalTo("num", randomLongT[1]).findFirst();
+                        topTwo.setImageBitmap(byteToBitmap(longTs.getImageData()));
+                        longTs = realm.where(LongT.class).equalTo("num", randomLongT[2]).findFirst();
+                        topThree.setImageBitmap(byteToBitmap(longTs.getImageData()));
+                    }
+                    if (lpCount == 1) {
+                        longPantses = realm.where(LongPants.class).equalTo("num",randomLongPants[0]).findFirst();
+                        bottomOne.setImageBitmap(byteToBitmap(longPantses.getImageData()));
+                    }
+                    else if(lpCount == 2) {
+                        longPantses = realm.where(LongPants.class).equalTo("num",randomLongPants[0]).findFirst();
+                        bottomOne.setImageBitmap(byteToBitmap(longPantses.getImageData()));
+                        longPantses = realm.where(LongPants.class).equalTo("num",randomLongPants[1]).findFirst();
+                        bottomTwo.setImageBitmap(byteToBitmap(longPantses.getImageData()));
+                    }
+                    else if(lpCount >= 3){
+                        longPantses = realm.where(LongPants.class).equalTo("num",randomLongPants[0]).findFirst();
+                        bottomOne.setImageBitmap(byteToBitmap(longPantses.getImageData()));
+                        longPantses = realm.where(LongPants.class).equalTo("num",randomLongPants[1]).findFirst();
+                        bottomTwo.setImageBitmap(byteToBitmap(longPantses.getImageData()));
+                        longPantses = realm.where(LongPants.class).equalTo("num",randomLongPants[2]).findFirst();
+                        bottomThree.setImageBitmap(byteToBitmap(longPantses.getImageData()));
+                    }
+                    if(padCount == 1) {
+                        paddings = realm.where(Padding.class).equalTo("num", randomPadding[0]).findFirst();
+                        outerOne.setImageBitmap(byteToBitmap(paddings.getImageData()));
+                    }
+                    else if(padCount == 2) {
+                        paddings = realm.where(Padding.class).equalTo("num", randomPadding[0]).findFirst();
+                        outerOne.setImageBitmap(byteToBitmap(paddings.getImageData()));
+                        paddings = realm.where(Padding.class).equalTo("num", randomPadding[1]).findFirst();
+                        outerTwo.setImageBitmap(byteToBitmap(paddings.getImageData()));
+                    }
+                    else if(padCount >= 3) {
+                        paddings = realm.where(Padding.class).equalTo("num", randomPadding[0]).findFirst();
+                        outerOne.setImageBitmap(byteToBitmap(paddings.getImageData()));
+                        paddings = realm.where(Padding.class).equalTo("num", randomPadding[1]).findFirst();
+                        outerTwo.setImageBitmap(byteToBitmap(paddings.getImageData()));
+                        paddings = realm.where(Padding.class).equalTo("num", randomPadding[2]).findFirst();
+                        outerThree.setImageBitmap(byteToBitmap(paddings.getImageData()));
+                    }
                 }
             }
         });
@@ -354,14 +718,14 @@ public class RecommendActivity extends AppCompatActivity {
                 lat = lastLocation.getLatitude();
                 lon = lastLocation.getLongitude();
 
-                Toast.makeText(getApplicationContext(), "마지막 위치 : " + "Latitude : " + lat + "\nLongitude:" + lon, Toast.LENGTH_LONG).show();
+//                Toast.makeText(getApplicationContext(), "마지막 위치 : " + "Latitude : " + lat + "\nLongitude:" + lon, Toast.LENGTH_LONG).show();
                 getWeatherData(lat,lon);
             }
         } catch(SecurityException ex) {
             ex.printStackTrace();
         }
 
-        Toast.makeText(getApplicationContext(), "위치 확인 시작", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(getApplicationContext(), "위치 확인 시작", Toast.LENGTH_SHORT).show();
     }
 
     // LocationListener 정의
@@ -376,7 +740,7 @@ public class RecommendActivity extends AppCompatActivity {
             Log.i("GPSListener", msg);
 
 
-            Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
+//            Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
             getWeatherData(lat,lon);
         }
 

@@ -104,27 +104,6 @@ public class MainActivity extends AppCompatActivity {
         addClothes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view){
-
-//                AlertDialog.Builder dialog = new AlertDialog.Builder(MainActivity.this);
-//                dialog  .setTitle("알림!")
-//                        .setMessage("**조끼 입력시 지퍼를 열고 촬영해 주세요**")
-//                        .setPositiveButton("확인", new DialogInterface.OnClickListener(){
-//                            @Override
-//                            public void onClick(DialogInterface dialog, int which) {
-//                                Toast.makeText(MainActivity.this, "사진을 촬영하세요", Toast.LENGTH_SHORT).show();
-//                                Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-//                                startActivityForResult(i, 0);
-//
-//                            }
-//                        })
-//                        .setNegativeButton("취소", new DialogInterface.OnClickListener(){
-//                            @Override
-//                            public void onClick(DialogInterface dialog, int which) {
-//                                Toast.makeText(MainActivity.this, "취소하였습니다", Toast.LENGTH_SHORT).show();
-//                            }
-//                        });
-//                dialog.create();
-//                dialog.show();
                 Intent addClothesIntent = new Intent(MainActivity.this, AddClothesActivity.class);
                 MainActivity.this.startActivity(addClothesIntent);
             }
@@ -180,14 +159,14 @@ public class MainActivity extends AppCompatActivity {
                 lat = lastLocation.getLatitude();
                 lon = lastLocation.getLongitude();
 
-                Toast.makeText(getApplicationContext(), "마지막 위치 : " + "Latitude : " + lat + "\nLongitude:" + lon, Toast.LENGTH_LONG).show();
+//                Toast.makeText(getApplicationContext(), "마지막 위치 : " + "Latitude : " + lat + "\nLongitude:" + lon, Toast.LENGTH_LONG).show();
                 getWeatherData(lat,lon);
             }
         } catch(SecurityException ex) {
             ex.printStackTrace();
         }
 
-        Toast.makeText(getApplicationContext(), "위치 확인 시작", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(getApplicationContext(), "위치 확인 시작", Toast.LENGTH_SHORT).show();
     }
 
     // LocationListener 정의
@@ -202,7 +181,7 @@ public class MainActivity extends AppCompatActivity {
             Log.i("GPSListener", msg);
 
 
-            Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
+//            Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
             getWeatherData(lat,lon);
         }
 
@@ -276,8 +255,6 @@ public class MainActivity extends AppCompatActivity {
                     description = result.getJSONArray("weather").getJSONObject(0).getString("description");
                     city = result.getString("name");
 
-//                    average = (Double.parseDouble(minTemp) + Double.parseDouble(maxTemp))/2.0;
-//                    average = Double.parseDouble(minTemp) + ((Double.parseDouble(maxTemp) - Double.parseDouble(minTemp))/2.0);
                     calculateAverage(Double.parseDouble(minTemp), Double.parseDouble(maxTemp));
 
                     currentCity.setText(String.valueOf(city));
@@ -295,10 +272,6 @@ public class MainActivity extends AppCompatActivity {
 
     private void calculateAverage(double min, double max) {
         average = min + ((max-min)/2.0);
-    }
-
-    public double getAverage() {
-        return average;
     }
 
     // Realm DB 날리기 위해 임시방편으로 사용
