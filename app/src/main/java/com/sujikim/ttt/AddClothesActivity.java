@@ -4,7 +4,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
+import android.net.Uri;
+import android.os.Environment;
 import android.provider.MediaStore;
+import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -20,7 +23,10 @@ import com.sujikim.ttt.model.Padding;
 import com.sujikim.ttt.model.ShortPants;
 import com.sujikim.ttt.model.ShortT;
 
+import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
@@ -34,6 +40,10 @@ public class AddClothesActivity extends AppCompatActivity implements View.OnClic
     private ImageView picture;
     private Bitmap thumbnail;
 
+    private static final int PICK_FROM_CAMERA = 0;
+    private static final int CROP_FROM_iMage = 1;
+    private String absoultePath;
+    private Uri mImageCaptureUri;
 
     // DB
     Realm realm;
@@ -66,8 +76,10 @@ public class AddClothesActivity extends AppCompatActivity implements View.OnClic
         picture = (ImageView)findViewById(R.id.showTakenPicture);
         insertDB = (Button)findViewById(R.id.btnInsertDB);
 
+
         takePicture.setOnClickListener(this);
         insertDB.setOnClickListener(this);
+
         initTensorFlowAndLoadModel();
     }
 
@@ -76,7 +88,14 @@ public class AddClothesActivity extends AppCompatActivity implements View.OnClic
         switch (v.getId()){
             case R.id.btnTakePicture:
                 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(intent, 1);
+
+                //임시경로 생성
+                String url = "tmp_" + String.valueOf(System.currentTimeMillis()) + ".jpg";
+                mImageCaptureUri = Uri.fromFile(new File(Environment.getExternalStorageDirectory(),url));
+
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, mImageCaptureUri);
+                startActivityForResult(intent, PICK_FROM_CAMERA);
+                //startActivityForResult(intent, 1);
                 break;
             case R.id.btnInsertDB:
                 realm.executeTransaction(new Realm.Transaction(){
@@ -177,20 +196,105 @@ public class AddClothesActivity extends AppCompatActivity implements View.OnClic
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == 1) {
-            if(resultCode == RESULT_OK) {
-                onCaptureImageResult(data);
+
+        if(resultCode != RESULT_OK)
+            return;
+
+        switch (requestCode){
+            case PICK_FROM_CAMERA:
+            {
+                Intent intent = new Intent("com.android.camera.action.CROP");
+                intent.setDataAndType(mImageCaptureUri, "image/*");
+
+                intent.putExtra("outputX", 299);
+                intent.putExtra("outputY", 299);
+                intent.putExtra("aspectX", 1);
+                intent.putExtra("aspectY", 1);
+                intent.putExtra("scale", true);
+                intent.putExtra("return-data", true);
+                startActivityForResult(intent, CROP_FROM_iMage);
+
+
+                break;
             }
-            else {
-                Toast.makeText(this,"취소하셨습니다.",Toast.LENGTH_SHORT).show();
+            case CROP_FROM_iMage:
+            {
+                if(resultCode != RESULT_OK){
+                    return;
+                }
+                final Bundle extras = data.getExtras();
+
+                String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Clothes/" + System.currentTimeMillis() + "jpg";
+
+                if(extras != null)
+                {
+                    Bitmap photo = extras.getParcelable("data");
+                    picture.setImageBitmap(photo);
+
+//                    picture.setDrawingCacheEnabled(true);
+//                    picture.buildDrawingCache();
+//                    Bitmap bitmap = picture.getDrawingCache();
+//                    final List<Classifier.Recognition> results = classifier.recognizeImage(bitmap);
+//                    resultShow.setText(results.toString());
+
+                    storeCropImage(photo, filePath);
+                    absoultePath = filePath;
+
+                    onCaptureImageResult(photo);
+                    break;
+                }
+                File f = new File(mImageCaptureUri.getPath());
+
+                if(f.exists())
+                {
+                    f.delete();
+                }
+//                onCaptureImageResult(photo);
             }
         }
+//        if(requestCode == 1) {
+//            if(resultCode == RESULT_OK) {
+//                onCaptureImageResult(data);
+//            }
+//            else {
+//                Toast.makeText(this,"취소하셨습니다.",Toast.LENGTH_SHORT).show();
+//            }
+//        }
     }
-    private void onCaptureImageResult(Intent data) {
-        thumbnail = (Bitmap)data.getExtras().get("data");
-        Bitmap finalBitmap = GetRotatedBitmap(thumbnail, 90);
-        picture.setImageBitmap(finalBitmap);
-        final List<Classifier.Recognition> results = classifier.recognizeImage(finalBitmap);
+
+    private  void storeCropImage(Bitmap bitmap, String filePath){
+        String dirPath = Environment.getExternalStorageDirectory().getAbsolutePath()+"/Clothes";
+        File directory_Clothes = new File(dirPath);
+
+        if(!directory_Clothes.exists())
+            directory_Clothes.mkdir();
+
+        File copyFile = new File(filePath);
+        BufferedOutputStream out = null;
+
+        try{
+            copyFile.createNewFile();
+            out = new BufferedOutputStream(new FileOutputStream(copyFile));
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
+
+            sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(copyFile)));
+
+            out.flush();
+            out.close();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+    private void onCaptureImageResult(Bitmap data) {
+//        thumbnail = (Bitmap)data.getExtras().get("data");
+//        Bitmap finalBitmap = GetRotatedBitmap(thumbnail, 90);
+//        picture.setImageBitmap(finalBitmap);
+//        final List<Classifier.Recognition> results = classifier.recognizeImage(finalBitmap);
+//        resultShow.setText(results.toString());
+
+//        thumbnail = (Bitmap)data.getExtras().get("data");
+//        picture.setImageBitmap(thumbnail);
+        final List<Classifier.Recognition> results = classifier.recognizeImage(data);
         resultShow.setText(results.toString());
     }
 
