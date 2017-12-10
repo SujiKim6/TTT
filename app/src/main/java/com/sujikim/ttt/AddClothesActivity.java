@@ -3,6 +3,7 @@ package com.sujikim.ttt;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
@@ -194,9 +195,12 @@ public class AddClothesActivity extends AppCompatActivity implements View.OnClic
 //        resultShow.setText(results.toString());
 
         thumbnail = (Bitmap)data.getExtras().get("data");
+//        thumbnail = Bitmap.createScaledBitmap(thumbnail, INPUT_SIZE, INPUT_SIZE, false); //이걸 넣으니까 패딩이 인식된다 그러나 반바지, 반팔이 인식이 안됨.
         picture.setImageBitmap(thumbnail);
         final List<Classifier.Recognition> results = classifier.recognizeImage(thumbnail);
         resultShow.setText(results.toString());
+
+
     }
 
     // 이미지 뷰에 있는 것을 가져와서 byte로 변환 후 저장
