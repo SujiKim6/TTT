@@ -63,6 +63,9 @@ public class MainActivity extends AppCompatActivity {
     // Realm DB 날리기 위해 임시방편으로 사용
 //    Realm realm;
 
+    // Realm DB에 미리 사진 저장하기
+    Realm realm;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -98,6 +101,8 @@ public class MainActivity extends AppCompatActivity {
 //                jac.deleteAllFromRealm();
 //            }
 //        });
+
+        //Realm DB에 미리 저장하기
 
 
 
