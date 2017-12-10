@@ -276,8 +276,6 @@ public class MainActivity extends AppCompatActivity {
                     description = result.getJSONArray("weather").getJSONObject(0).getString("description");
                     city = result.getString("name");
 
-//                    average = (Double.parseDouble(minTemp) + Double.parseDouble(maxTemp))/2.0;
-//                    average = Double.parseDouble(minTemp) + ((Double.parseDouble(maxTemp) - Double.parseDouble(minTemp))/2.0);
                     calculateAverage(Double.parseDouble(minTemp), Double.parseDouble(maxTemp));
 
                     currentCity.setText(String.valueOf(city));
@@ -295,10 +293,6 @@ public class MainActivity extends AppCompatActivity {
 
     private void calculateAverage(double min, double max) {
         average = min + ((max-min)/2.0);
-    }
-
-    public double getAverage() {
-        return average;
     }
 
     // Realm DB 날리기 위해 임시방편으로 사용
