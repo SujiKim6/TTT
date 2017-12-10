@@ -206,11 +206,11 @@ public class AddClothesActivity extends AppCompatActivity implements View.OnClic
                 Intent intent = new Intent("com.android.camera.action.CROP");
                 intent.setDataAndType(mImageCaptureUri, "image/*");
 
-                intent.putExtra("outputX", 299);
-                intent.putExtra("outputY", 299);
-                intent.putExtra("aspectX", 1);
-                intent.putExtra("aspectY", 1);
-                intent.putExtra("scale", true);
+//                intent.putExtra("outputX", 299);
+//                intent.putExtra("outputY", 299);
+//                intent.putExtra("aspectX", 1);
+//                intent.putExtra("aspectY", 1);
+//                intent.putExtra("scale", true);
                 intent.putExtra("return-data", true);
                 startActivityForResult(intent, CROP_FROM_iMage);
 
