@@ -40,9 +40,9 @@ public class AddClothesActivity extends AppCompatActivity implements View.OnClic
     Context context = this;
 
     // TensorFlow
-    private static final int INPUT_SIZE = 299; //224
-    private static final int IMAGE_MEAN = 128; //117
-    private static final float IMAGE_STD = 128f; //1
+    private static final int INPUT_SIZE = 299; //224 // 299
+    private static final int IMAGE_MEAN = 128; //117 // 128
+    private static final float IMAGE_STD = 128f; //1 // 128f
     private static final String INPUT_NAME = "Mul";
     private static final String OUTPUT_NAME = "final_result";
 
@@ -187,10 +187,15 @@ public class AddClothesActivity extends AppCompatActivity implements View.OnClic
         }
     }
     private void onCaptureImageResult(Intent data) {
+//        thumbnail = (Bitmap)data.getExtras().get("data");
+//        Bitmap finalBitmap = GetRotatedBitmap(thumbnail, 90);
+//        picture.setImageBitmap(finalBitmap);
+//        final List<Classifier.Recognition> results = classifier.recognizeImage(finalBitmap);
+//        resultShow.setText(results.toString());
+
         thumbnail = (Bitmap)data.getExtras().get("data");
-        Bitmap finalBitmap = GetRotatedBitmap(thumbnail, 90);
-        picture.setImageBitmap(finalBitmap);
-        final List<Classifier.Recognition> results = classifier.recognizeImage(finalBitmap);
+        picture.setImageBitmap(thumbnail);
+        final List<Classifier.Recognition> results = classifier.recognizeImage(thumbnail);
         resultShow.setText(results.toString());
     }
 
@@ -296,25 +301,25 @@ public class AddClothesActivity extends AppCompatActivity implements View.OnClic
 //        return sampleSize;
 //    }
 
-
-    private Bitmap GetRotatedBitmap(Bitmap bitmap, int degrees) {
-        if (degrees != 0 && bitmap != null) {
-            Matrix m = new Matrix();
-            m.setRotate(degrees, (float) bitmap.getWidth() / 2, (float) bitmap.getHeight() / 2);
-
-            try {
-                Bitmap b2 = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), m, true);
-
-                if (bitmap != b2) {
-                    bitmap.recycle();
-                    bitmap = b2;
-                }
-            } catch (OutOfMemoryError e) {
-                // 메모리 부족에러시, 원본을 반환
-            }
-        }
-        return bitmap;
-    }
+//
+//    private Bitmap GetRotatedBitmap(Bitmap bitmap, int degrees) {
+//        if (degrees != 0 && bitmap != null) {
+//            Matrix m = new Matrix();
+//            m.setRotate(degrees, (float) bitmap.getWidth() / 2, (float) bitmap.getHeight() / 2);
+//
+//            try {
+//                Bitmap b2 = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), m, true);
+//
+//                if (bitmap != b2) {
+//                    bitmap.recycle();
+//                    bitmap = b2;
+//                }
+//            } catch (OutOfMemoryError e) {
+//                // 메모리 부족에러시, 원본을 반환
+//            }
+//        }
+//        return bitmap;
+//    }
 
     @Override
     protected void onDestroy() {
